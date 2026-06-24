@@ -30,16 +30,16 @@
             <div class="logo-icon">
                 <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="The Church of Pentecost KOTD Logo">
             </div>
-            <span class="logo-text">THE CHURCH OF PENTECOST KOTD</span>
+            <span class="logo-text">THE CHURCH OF PENTECOST - KOTD</span>
         </div>
             
             <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Sermons</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Events</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Ministries</a></li>
-                <li class="nav-item"><a href="#" class="nav-link cta-nav">Give</a></li>
+                <li class="nav-item"><a href="#hero" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="#welcomesection" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#sermonsection" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="#eventssection" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="#ministriessection" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="#givingsection" class="nav-link cta-nav">Give</a></li>
             </ul>
         </div>
     </nav>
@@ -64,7 +64,7 @@
                     <h3 class="mobile-menu-title">GET INVOLVED</h3>
                     <ul class="mobile-menu-list">
                         <li><a href="#">Worship with us</a></li>
-                        <li><a href="#">Events <span class="menu-subtitle">Meaningful experiences</span></a></li>
+                        <li><a href="#eventssection">Events <span class="menu-subtitle">Meaningful experiences</span></a></li>
                         <li><a href="#">Salvation <span class="menu-subtitle">Receive God's grace</span></a></li>
                         <li><a href="#">Baptism <span class="menu-subtitle">Celebrate new beginnings</span></a></li>
                         <li><a href="#">Need Prayer? <span class="menu-subtitle">Support through faith</span></a></li>
@@ -74,7 +74,7 @@
                 <div class="mobile-menu-section">
                     <h3 class="mobile-menu-title">DISCOVER</h3>
                     <ul class="mobile-menu-list">
-                        <li><a href="#">Sermons</a></li>
+                        <li><a href="#sermonsection">Sermons</a></li>
                         <li><a href="#">Study Guides</a></li>
                     </ul>
                 </div>
@@ -83,7 +83,10 @@
                     <h3 class="mobile-menu-title">MINISTRIES</h3>
                     <ul class="mobile-menu-list">
                         <li><a href="#">Sunday School</a></li>
-                        <li><a href="#">Young Adults</a></li>
+                        <li><a href="#">Pentecost Men's Ministry</a></li>
+                        <li><a href="#">Women's Ministry</a></li>
+                        <li><a href="#">Youth Ministry</a></li>
+                        <li><a href="#">Evangelism Ministry</a></li>
                     </ul>
                 </div>
                 
@@ -114,10 +117,9 @@
     </div>
 
 
-        <!-- ============================================ -->
+    <!-- ============================================ -->
     <!-- HERO SECTION WITH AUTO-CHANGING IMAGE CARDS -->
     <!-- ============================================ -->
-    <!-- EDIT: Change hero text, button text, and background image URL -->
     <section class="hero" id="hero">
         <!-- Hero Background Image (static) -->
         <div class="hero-bg-image"></div>
@@ -208,8 +210,7 @@
     <!-- ============================================ -->
     <!-- WELCOME HOME SECTION -->
     <!-- ============================================ -->
-    <!-- EDIT: Change welcome message, heading, description, and replace kotd-community.jpg with your actual image -->
-    <section class="welcome section-padding">
+    <section class="welcome section-padding" id="welcomesection">
         <div class="container">
             <div class="section-header fade-in">
                 <span class="section-label">Welcome</span>
@@ -287,7 +288,7 @@
     <!-- ============================================ -->
     <!-- MINISTRIES SECTION WITH IMAGES -->
     <!-- ============================================ -->
-    <section class="ministries section-padding">
+    <section class="ministries section-padding" id="ministriessection">
         <div class="container">
             <div class="section-header fade-in">
                 <span class="section-label">Get Connected</span>
@@ -362,7 +363,7 @@
     <!-- ============================================ -->
     <!-- EVENTS SECTION -->
     <!-- ============================================ -->
-    <section class="events section-padding bg-light">
+    <section class="events section-padding bg-light" id ="eventssection">
         <div class="container">
             <div class="section-header fade-in">
                 <span class="section-label">What's Happening</span>
@@ -415,7 +416,7 @@
     <!-- ============================================ -->
     <!-- SERMON SECTION -->
     <!-- ============================================ -->
-    <section class="sermon section-padding">
+    <section class="sermon section-padding" id="sermonsection">
         <div class="container">
             <div class="section-header fade-in">
                 <span class="section-label">Latest Message</span>
@@ -448,7 +449,7 @@
     <!-- ============================================ -->
     <!-- GIVING SECTION -->
     <!-- ============================================ -->
-    <section class="giving section-padding bg-accent">
+    <section class="giving section-padding bg-accent" id="givingsection">
         <div class="container">
             <div class="giving-content fade-in">
                 <h2>Generosity Changes Everything</h2>

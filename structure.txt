@@ -1,0 +1,12 @@
+church-app/
+├── app.py              # Flask application
+├── requirements.txt    # Python dependencies
+├── templates/
+│   └── index.html     # Main homepage template
+├── static/
+│   ├── css/
+│   │   └── style.css  # Custom styles
+│   ├── js/
+│   │   └── main.js    # JavaScript functionality
+│   └── images/        # Image assets
+└── README.md 

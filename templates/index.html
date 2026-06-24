@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Church Of Pentecost - Kwabenya Old Town District, Accra. A community where you can encounter God, discover your calling, and make a difference. You belong here.">
+    <title>The Church Of Pentecost KOTD | Welcome Home</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- ============================================ -->
+    <!-- NAVIGATION -->
+    <!-- ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            
+        <div class="nav-brand">
+            <div class="logo-icon">
+                <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="The Church of Pentecost KOTD Logo">
+            </div>
+            <span class="logo-text">THE CHURCH OF PENTECOST KOTD</span>
+        </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="#" class="nav-link cta-nav">Give</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ============================================ -->
+    <!-- SLIDE-IN MENU OVERLAY -->
+    <!-- ============================================ -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <div class="logo-icon">
+                        <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                    </div>
+                    <span>THE CHURCH OF PENTECOST KOTD</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+            </div>
+            
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">GET INVOLVED</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="#">Worship with us</a></li>
+                        <li><a href="#">Events <span class="menu-subtitle">Meaningful experiences</span></a></li>
+                        <li><a href="#">Salvation <span class="menu-subtitle">Receive God's grace</span></a></li>
+                        <li><a href="#">Baptism <span class="menu-subtitle">Celebrate new beginnings</span></a></li>
+                        <li><a href="#">Need Prayer? <span class="menu-subtitle">Support through faith</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">DISCOVER</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="#">Sermons</a></li>
+                        <li><a href="#">Study Guides</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">MINISTRIES</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="#">Sunday School</a></li>
+                        <li><a href="#">Young Adults</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">ABOUT</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="#">The Church Of Pentecost KOTD</a></li>
+                        <li><a href="#">Beliefs & Values</a></li>
+                    </ul>
+                </div>
+                
+                <div class="mobile-menu-contact">
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                    <p>📍 opposite Papa's Pizza- Kwabenya</p>
+                </div>
+                
+                <div class="mobile-menu-legal">
+                    <a href="#">Cookies</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                
+                <div class="mobile-menu-copyright">
+                    <p>© 2026 The Church Of Pentecost KOTD</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- ============================================ -->
+    <!-- HERO SECTION WITH AUTO-CHANGING IMAGE CARDS -->
+    <!-- ============================================ -->
+    <!-- EDIT: Change hero text, button text, and background image URL -->
+    <section class="hero" id="hero">
+        <!-- Hero Background Image (static) -->
+        <div class="hero-bg-image"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content-wrapper">
+            <!-- Left: Text Content -->
+            <div class="hero-text-content">
+                <h1 class="hero-title">Find Your<br>Purpose & Place<br>with us, KOTD</h1>
+                <p class="hero-subtitle">The Church Unleashed to Transform Society Through the Gospel and the Power of the Holy Spirit.</p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary">Plan Your Visit</a>
+                    <a href="#" class="btn btn-outline">Worship with Us</a>
+                </div>
+            </div>
+            
+            <!-- Right: Auto-Changing Image Card -->
+            <div class="hero-image-card">
+                <div class="hero-card-container">
+                    <div class="hero-card-slides" id="hero-slides">
+                        <!-- Slide 1 -->
+                        <div class="hero-card-slide active">
+                            <img src="{{ url_for('static', filename='images/kotdworshipwithus.jpeg') }}" alt="Church Worship Service">
+                            <div class="hero-card-caption">
+                                <span>Join Us for Worship</span>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="hero-card-slide">
+                            <img src="{{ url_for('static', filename='images/kotdcommunity.jpeg') }}" alt="Community Fellowship">
+                            <div class="hero-card-caption">
+                                <span>Experience Community</span>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="hero-card-slide">
+                            <img src="{{ url_for('static', filename='images/kotdempower.jpeg') }}" alt="Youth Ministry">
+                            <div class="hero-card-caption">
+                                <span>Empowering the Next Generation</span>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="hero-card-slide">
+                            <img src="{{ url_for('static', filename='images/kotdoutreach2.jpeg') }}" alt="Outreach Program">
+                            <div class="hero-card-caption">
+                                <span>Serving Our Community</span>
+                            </div>
+                        </div>
+                          <!-- Slide 5 - NEW -->
+                        <div class="hero-card-slide">
+                            <img src="{{ url_for('static', filename='images/kotdprayer.jpeg') }}" alt="Prayer Meeting">
+                            <div class="hero-card-caption">
+                                <span>Power of Prayer</span>
+                            </div>
+                        </div>
+                        <!-- Slide 6 - NEW -->
+                        <div class="hero-card-slide">
+                            <img src="{{ url_for('static', filename='images/kotdsundaysch.jpeg') }}" alt="Sunday School">
+                            <div class="hero-card-caption">
+                                <span>Training the Next Generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Navigation Dots -->
+                    <div class="hero-card-dots" id="hero-dots">
+                        <span class="hero-dot active" data-slide="0"></span>
+                        <span class="hero-dot" data-slide="1"></span>
+                        <span class="hero-dot" data-slide="2"></span>
+                        <span class="hero-dot" data-slide="3"></span>
+                        <span class="hero-dot" data-slide="4"></span>
+                        <span class="hero-dot" data-slide="5"></span>
+                    </div>
+                    
+                    <!-- Card Navigation Arrows -->
+                    <button class="hero-card-arrow hero-card-prev" id="hero-prev">❮</button>
+                    <button class="hero-card-arrow hero-card-next" id="hero-next">❯</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- WELCOME HOME SECTION -->
+    <!-- ============================================ -->
+    <!-- EDIT: Change welcome message, heading, description, and replace kotd-community.jpg with your actual image -->
+    <section class="welcome section-padding">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">Welcome</span>
+                <h2 class="section-title">There's a Place<br>For You Here</h2>
+            </div>
+            <div class="welcome-grid">
+                <div class="welcome-text fade-in">
+                    <p class="lead-text">At The Church of Pentecost KOTD, we believe that everyone has a story and a purpose. Whether you're exploring faith for the first time or looking for a church to call home, you are welcome here.</p>
+                    <p>We're a community of believers committed to loving God, loving people, and serving our nation. No matter your background, doubts, or struggles come as you are.</p>
+                    <a href="#" class="btn btn-secondary">Learn More About Us</a>
+                </div>
+                <div class="welcome-image fade-in">
+                    <img src="{{ url_for('static', filename='images/kotdcommunity.jpeg') }}" alt="Church Community at The Church of Pentecost KOTD" class="welcome-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SERVICE TIMES SECTION -->
+    <!-- ============================================ -->
+    <section class="services section-padding bg-light">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">Join Us</span>
+                <h2 class="section-title">Service Times<br>& Locations</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏛</div>
+                    <h3>Children's Service</h3>
+                    <p class="service-address">Opposite Papa's Pizza<br>Kwabenya, Accra</p>
+                    <div class="service-times">
+                        <div class="time-block">
+                            <strong>Sundays</strong>
+                            <p>7:00 AM - 9:30 AM</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-text">Get Directions →</a>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏛</div>
+                    <h3>English Service</h3>
+                    <p class="service-address">Opposite Papa's Pizza<br>Kwabenya, Accra</p>
+                    <div class="service-times">
+                        <div class="time-block">
+                            <strong>Sundays</strong>
+                            <p>07:00 AM - 09:30 AM</p>
+                        </div>
+                        <div class="time-block">
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-text">Get Directions →</a>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏛</div>
+                    <h3>Local Service</h3>
+                    <p class="service-address">Opposite Papa's Pizza<br>Kwabenya, Accra</p>
+                    <div class="service-times">
+                        <div class="time-block">
+                            <strong>Sundays</strong>
+                        </div>
+                        <div class="time-block">
+        
+                             <p>09:30 AM - 12:00 PM</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-text">Watch Online →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================ -->
+    <!-- MINISTRIES SECTION WITH IMAGES -->
+    <!-- ============================================ -->
+    <section class="ministries section-padding">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">Get Connected</span>
+                <h2 class="section-title">Ministries For<br>Every Generation</h2>
+            </div>
+            <div class="ministries-grid">
+                
+                <!-- Youth Ministry Card -->
+                <div class="ministry-card fade-in">
+                    <div class="card-image">
+                        <img src="{{ url_for('static', filename='images/kotdyouth.jpeg') }}" alt="Youth Ministry" class="ministry-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Youth Ministry</h3>
+                        <p>Empowering the next generation</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                
+                <!-- Men's Fellowship Card -->
+                <div class="ministry-card fade-in">
+                    <div class="card-image">
+                        <img src="{{ url_for('static', filename='images/kotdmen.jpeg') }}" alt="Men's Fellowship" class="ministry-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>PEMEM (Pentecost Men's Ministry)</h3>
+                        <p>Brotherhood & Growth</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                
+                <!-- Women's Ministry Card -->
+                <div class="ministry-card fade-in">
+                    <div class="card-image">
+                        <img src="{{ url_for('static', filename='images/kotdwomen.jpeg') }}" alt="Women's Ministry" class="ministry-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Women's Ministry</h3>
+                        <p>Sisterhood & Support</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                
+                <!-- Sunday School Card -->
+                <div class="ministry-card fade-in">
+                    <div class="card-image">
+                        <img src="{{ url_for('static', filename='images/kotdsundaysch.jpeg') }}" alt="Sunday School" class="ministry-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sunday School</h3>
+                        <p>Children's Ministry</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                
+                <!-- Young Adults Card -->
+                <div class="ministry-card fade-in">
+                    <div class="card-image">
+                        <img src="{{ url_for('static', filename='images/kotdoutreach.jpeg') }}" alt="Evangelism Ministry" class="ministry-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Evangelism Ministry</h3>
+                        <p>Evangelism & outreach activities</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- EVENTS SECTION -->
+    <!-- ============================================ -->
+    <section class="events section-padding bg-light">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">What's Happening</span>
+                <h2 class="section-title">Upcoming Events</h2>
+            </div>
+            <div class="events-grid">
+                <div class="event-card fade-in">
+                    <div class="event-date">
+                        <span class="event-month">JUN</span>
+                        <span class="event-day">8-11</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>WGW - Worker's Guild Week</h3>
+                        <p class="event-meta">⏰ 6:00 PM each night | 📍 Children Auditorium</p>
+                        <p>Entrepreneurship, Employment, Investment & Career Development</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>                    
+                </div>
+                <div class="event-card fade-in">
+                    <div class="event-date">
+                        <span class="event-month">JUN</span>
+                        <span class="event-day">22</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>WEDDING OF Ms. PATRICIA</h3>
+                        <p class="event-meta">⏰ 1:00 PM | 📍 Main Auditorium</p>
+                        <p>A happy union, a new beginning and a blessed future.</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+                <div class="event-card fade-in">
+                    <div class="event-date">
+                        <span class="event-month">JUN</span>
+                        <span class="event-day">21</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>PEMEN WEEK CELEBRATION</h3>
+                        <p class="event-meta">⏰ 7:00 AM - 9:30 AM | 📍 Kwabenya Community</p>
+                        <p>Men, the image and glory of God.</p>
+                        <a href="#" class="btn btn-text">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="events-cta fade-in">
+                <a href="#" class="btn btn-secondary">View All Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SERMON SECTION -->
+    <!-- ============================================ -->
+    <section class="sermon section-padding">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">Latest Message</span>
+                <h2 class="section-title">Hear This Week's<br>Sermon</h2>
+            </div>
+            <div class="sermon-grid">
+                <div class="sermon-media fade-in">
+                    <div class="video-placeholder">
+                        <div class="play-button">
+                            <span>▶</span>
+                        </div>
+                        <span>Latest Sermon Video</span>
+                    </div>
+                </div>
+                <div class="sermon-info fade-in">
+                    <span class="sermon-series">Current Series: The Power of the Holy Spirit</span>
+                    <h3>"Walking in the Spirit"</h3>
+                    <p class="sermon-speaker">District Pastor</p>
+                    <p class="sermon-date">June 7, 2026</p>
+                    <p class="sermon-description">Discover how to live a Spirit-filled life and experience the transformative power of God in your daily walk.</p>
+                    <div class="sermon-actions">
+                        <a href="#" class="btn btn-primary">Watch Sermon</a>
+                        <a href="#" class="btn btn-outline-dark">Listen on Podcast</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- GIVING SECTION -->
+    <!-- ============================================ -->
+    <section class="giving section-padding bg-accent">
+        <div class="container">
+            <div class="giving-content fade-in">
+                <h2>Generosity Changes Everything</h2>
+                <p class="giving-text">Your giving makes a difference fueling ministry, reaching our city, and transforming lives around the world.</p>
+                <div class="giving-buttons">
+                    <a href="#" class="btn btn-white">Support KOTD</a>
+                    <a href="#" class="btn btn-outline-white">Ways to Give</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                        </div>
+                        <span class="logo-text">THE CHURCH OF PENTECOST KOTD</span>
+                    </div>
+                    <p>The Church Unleashed to Transform Society Through the Gospel and the Power of the Holy Spirit.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram" class="social-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="YouTube" class="social-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="WhatsApp" class="social-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Get Involved</h4>
+                    <ul>
+                        <li><a href="#">Serve</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Salvation</a></li>
+                        <li><a href="#">Baptism</a></li>
+                        <li><a href="#">Prayer Requests</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Discover</h4>
+                    <ul>
+                        <li><a href="#">Sermons</a></li>
+                        <li><a href="#">Study Guides</a></li>
+                        <li><a href="#">Sunday School</a></li>
+                        <li><a href="#">Young Adults</a></li>
+                        <li><a href="#">Beliefs & Values</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>📍 Opposite Papa's Pizza- Kwabenya</p>
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                    <p>✉️ hello@thechurchofpentecostkodt.church</p>
+                    <p>🕐 Office Hours: Mon-Thu 9AM-5PM</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSccIBKscxwgCkCtlBuoihcDfJlU8RdqmSIu0sOG9Z2XiNJUqg/viewform?usp=publish-editor" class="footer-feedback" target="_blank">Notice an issue? Tell us →</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 The Church Of Pentecost KOTD. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Contact Us</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

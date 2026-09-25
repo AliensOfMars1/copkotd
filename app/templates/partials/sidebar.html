@@ -1,0 +1,28 @@
+<ul class="nav flex-column sidebar-nav flex-grow-1">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('dashboard.' + current_user.role) }}">
+      <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
+    </a>
+  </li>
+
+  {% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('members.list_members') }}">
+      <i class="bi bi-people"></i> <span>Members</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {# More nav links added per phase #}
+</ul>
+
+{# ── User panel at the bottom ────────────────────────────── #}
+<div class="sidebar-user">
+  <div class="small text-uppercase text-secondary mb-1">Signed in as</div>
+  <div class="fw-semibold">{{ current_user.full_name }}</div>
+  <div class="small text-secondary mb-2">{{ current_user.role_label }}</div>
+  <a class="btn btn-sm btn-outline-light w-100"
+     href="{{ url_for('auth.logout') }}">
+    <i class="bi bi-box-arrow-right"></i> Logout
+  </a>
+</div>

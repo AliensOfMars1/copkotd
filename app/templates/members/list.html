@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Members — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Members</h2>
+  <a class="btn btn-primary" href="{{ url_for('members.create_member') }}">
+    <i class="bi bi-plus-lg"></i> Add Member
+  </a>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-sm-6 col-md-4">
+    <input type="text" name="q" value="{{ q }}" class="form-control"
+           placeholder="Search name, phone, email…">
+  </div>
+  <div class="col-sm-4 col-md-3">
+    <select name="status" class="form-select">
+      <option value="">All statuses</option>
+      {% for val in ['active','inactive','transferred','backslider','deceased'] %}
+        <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ val|capitalize }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-secondary" type="submit">Filter</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('members.list_members') }}">Reset</a>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th>Baptized</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in members %}
+      <tr>
+        <td>
+          <a href="{{ url_for('members.view_member', member_id=m.id) }}">
+            {{ m.full_name }}
+          </a>
+        </td>
+        <td>{{ m.gender or "—" }}</td>
+        <td>{{ m.phone or "—" }}</td>
+        <td>
+          <span class="badge bg-{{ 'success' if m.membership_status == 'active' else 'secondary' }}">
+            {{ m.membership_status|capitalize }}
+          </span>
+        </td>
+        <td>
+          {% if m.water_baptism %}<i class="bi bi-droplet-fill text-primary"></i>{% endif %}
+          {% if m.holyghost_baptism %}<i class="bi bi-fire text-danger"></i>{% endif %}
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('members.edit_member', member_id=m.id) }}">Edit</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No members found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pagination.pages > 1 %}
+<nav>
+  <ul class="pagination justify-content-center">
+    {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+      {% if p %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+          <a class="page-link"
+             href="{{ url_for('members.list_members', page=p, q=q, status=status) }}">{{ p }}</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

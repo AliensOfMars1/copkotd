@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ member.full_name }} — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">{{ member.full_name }}</h2>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{{ url_for('members.list_members') }}">Back</a>
+    <a class="btn btn-primary" href="{{ url_for('members.edit_member', member_id=member.id) }}">Edit</a>
+    <form method="post" action="{{ url_for('members.delete_member', member_id=member.id) }}"
+          onsubmit="return confirm('Delete this member permanently?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-outline-danger" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Personal</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Gender</dt><dd class="col-7">{{ member.gender or "—" }}</dd>
+          <dt class="col-5">Date of Birth</dt><dd class="col-7">{{ member.date_of_birth or "—" }}</dd>
+          <dt class="col-5">Age</dt><dd class="col-7">{{ member.age or "—" }}</dd>
+          <dt class="col-5">Phone</dt><dd class="col-7">{{ member.phone or "—" }}</dd>
+          <dt class="col-5">Email</dt><dd class="col-7">{{ member.email or "—" }}</dd>
+          <dt class="col-5">Marital Status</dt><dd class="col-7">{{ member.marital_status or "—" }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Spiritual</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Member Type</dt><dd class="col-7">{{ member.member_type or "—" }}</dd>
+          <dt class="col-5">Water Baptism</dt><dd class="col-7">{{ "Yes" if member.water_baptism else "No" }}</dd>
+          <dt class="col-5">Date of Baptism</dt><dd class="col-7">{{ member.date_of_baptism or "—" }}</dd>
+          <dt class="col-5">Holy Ghost Baptism</dt><dd class="col-7">{{ "Yes" if member.holyghost_baptism else "No" }}</dd>
+          <dt class="col-5">Communicant</dt><dd class="col-7">{{ "Yes" if member.communicant else "No" }}</dd>
+          <dt class="col-5">Status</dt><dd class="col-7">{{ member.membership_status|capitalize }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Address</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Address</dt><dd class="col-7">{{ member.address_line1 or "—" }}</dd>
+          <dt class="col-5">GPS</dt><dd class="col-7">{{ member.gps_address or "—" }}</dd>
+          <dt class="col-5">City</dt><dd class="col-7">{{ member.city or "—" }}</dd>
+          <dt class="col-5">Hometown</dt><dd class="col-7">{{ member.hometown or "—" }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Education &amp; Work</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Occupation</dt><dd class="col-7">{{ member.occupation or "—" }}</dd>
+          <dt class="col-5">Education</dt><dd class="col-7">{{ member.level_of_education or "—" }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

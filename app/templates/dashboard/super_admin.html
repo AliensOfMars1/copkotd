@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Super Admin Dashboard — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">Super Admin Dashboard</h2>
+  <span class="text-muted small">Full oversight</span>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Total Members</div>
+        <div class="fs-3 fw-bold">{{ stats.total_members }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Active Members</div>
+        <div class="fs-3 fw-bold text-success">{{ stats.active_members }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Active Staff</div>
+        <div class="fs-3 fw-bold">{{ stats.total_staff }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Ministries</div>
+        <div class="fs-3 fw-bold">{{ stats.total_ministries }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <strong>Recently Added Members</strong>
+        <a href="{{ url_for('members.list_members') }}" class="small">View all</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for m in recent %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{{ url_for('members.view_member', member_id=m.id) }}">{{ m.full_name }}</a>
+          <span class="badge bg-{{ 'success' if m.membership_status == 'active' else 'secondary' }}">
+            {{ m.membership_status|capitalize }}
+          </span>
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">No members yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white"><strong>Quick Actions</strong></div>
+      <div class="card-body d-grid gap-2">
+        <a class="btn btn-outline-primary" href="{{ url_for('members.create_member') }}">
+          <i class="bi bi-person-plus"></i> Add Member
+        </a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('members.list_members') }}">
+          <i class="bi bi-people"></i> Manage Members
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1909,3 +1909,110 @@ ul {
         letter-spacing: 1px;
     }
 }
+
+/* ── Layout basics ───────────────────────────────────────── */
+body {
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+/* ── Mobile topbar ───────────────────────────────────────── */
+.mobile-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: #1c1f23;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+}
+
+/* ── Sidebar (desktop) ───────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background: #1c1f23;
+  color: #cfd3d6;
+  padding: 1rem 0 0;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1040;
+}
+
+.sidebar-nav {
+  padding: 0 0.5rem;
+}
+
+.sidebar .nav-link {
+  color: #cfd3d6;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.4rem;
+  margin: 0.15rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}
+
+/* ── Sidebar user panel ──────────────────────────────────── */
+.sidebar-user {
+  margin-top: auto;
+  padding: 1rem 1rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* ── Main content area ───────────────────────────────────── */
+.main-content {
+  padding: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 240px;      /* clear the fixed sidebar */
+    padding: 2rem;
+  }
+}
+
+/* ── Offcanvas sidebar (mobile) ──────────────────────────── */
+.offcanvas.text-bg-dark .sidebar-nav {
+  padding: 0 0.5rem;
+}
+
+.offcanvas.text-bg-dark .nav-link {
+  color: #cfd3d6;
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.offcanvas.text-bg-dark .nav-link:hover {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+}
+
+.offcanvas.text-bg-dark .nav-link i {
+  width: 22px;
+  text-align: center;
+}

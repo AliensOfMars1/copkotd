@@ -1,1 +1,14 @@
-Flask==2.3.3
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Bcrypt
+Flask-WTF
+Flask-Migrate
+Flask-Mail
+WTForms
+python-dotenv
+psycopg2-binary
+email-validator
+APScheduler
+openpyxl
+python-docx

@@ -7,8 +7,8 @@ Flask-Migrate
 Flask-Mail
 WTForms
 python-dotenv
-psycopg2-binary
 email-validator
 APScheduler
 openpyxl
 python-docx
+gunicorn

@@ -95,6 +95,7 @@
                     <ul class="mobile-menu-list">
                         <li><a href="#">The Church Of Pentecost KOTD</a></li>
                         <li><a href="#">Beliefs & Values</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Staff Only Login</a></li>
                     </ul>
                 </div>
                 
@@ -107,6 +108,7 @@
                     <a href="#">Cookies</a>
                     <a href="#">Terms</a>
                     <a href="#">Privacy Policy</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login-mobile">Staff Only Login</a>
                 </div>
                 
                 <div class="mobile-menu-copyright">
@@ -534,6 +536,7 @@
                     <a href="#">Contact Us</a>
                     <a href="#">Cookies</a>
                     <a href="#">Terms</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login">Staff Only Login</a>
                 </div>
             </div>
         </div>

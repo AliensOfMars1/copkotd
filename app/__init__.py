@@ -30,10 +30,16 @@ def create_app(config_class=Config):
     from app.auth.routes import auth_bp
     from app.dashboard.routes import dashboard_bp
     from app.members.routes import members_bp
+    from app.users.routes import users_bp
+    from app.ministries.routes import ministries_bp
+    from app.families.routes import families_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(members_bp)
+    app.register_blueprint(users_bp)
+    app.register_blueprint(ministries_bp)
+    app.register_blueprint(families_bp)
 
     return app

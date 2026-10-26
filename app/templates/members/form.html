@@ -51,10 +51,17 @@
   </div>
 
   <div class="card mb-3">
-    <div class="card-header">Family</div>
+    <div class="card-header">Family (Biological / Guardian)</div>
     <div class="card-body row g-3">
       {{ render_field(form.parent_name, 6) }}
       {{ render_field(form.parent_relationship, 6) }}
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Church Family Group</div>
+    <div class="card-body row g-3">
+      {{ render_field(form.family_id, 12) }}
     </div>
   </div>
 

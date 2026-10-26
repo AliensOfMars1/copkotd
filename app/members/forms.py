@@ -3,6 +3,7 @@ from wtforms import (
     StringField, DateField, SelectField, BooleanField, TextAreaField, SubmitField
 )
 from wtforms.validators import DataRequired, Optional, Email, Length
+from app.models.family import Family
 
 
 class MemberForm(FlaskForm):
@@ -138,5 +139,16 @@ class MemberForm(FlaskForm):
         default="active",
         validators=[DataRequired()],
     )
+    family_id = SelectField(
+        "Family",
+        coerce=int,
+        validators=[DataRequired(message="Select a family")],
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.family_id.choices = [
+            (f.id, f.name) for f in Family.query.order_by(Family.name).all()
+        ]
 
     submit = SubmitField("Save Member")

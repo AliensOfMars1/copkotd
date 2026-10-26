@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Ministries — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Ministries</h2>
+  <a class="btn btn-primary" href="{{ url_for('ministries.create_ministry') }}">
+    <i class="bi bi-plus-lg"></i> New Ministry
+  </a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Leaders</th>
+        <th>Meeting Day</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in ministries %}
+      <tr>
+        <td>{{ m.name }}</td>
+        <td>{{ m.category or "—" }}</td>
+        <td>
+          {% if m.leader_count %}
+            {% for l in m.leaders %}
+              <span class="badge bg-info text-dark">{{ l.full_name }}</span>
+            {% endfor %}
+          {% else %}
+            <span class="text-muted small">None</span>
+          {% endif %}
+        </td>
+        <td>{{ m.meeting_day or "—" }}</td>
+        <td>
+          <span class="badge bg-{{ 'success' if m.is_active else 'secondary' }}">
+            {{ "Active" if m.is_active else "Inactive" }}
+          </span>
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('ministries.edit_ministry', ministry_id=m.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('ministries.delete_ministry', ministry_id=m.id) }}"
+                class="d-inline"
+                onsubmit="return confirm('Delete {{ m.name }}?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="text-center text-muted py-4">No ministries yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

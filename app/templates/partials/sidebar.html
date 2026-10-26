@@ -1,14 +1,43 @@
 <ul class="nav flex-column sidebar-nav flex-grow-1">
   <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('dashboard.' + current_user.role) }}">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('dashboard.') %}active{% endif %}"
+       href="{{ url_for('dashboard.' + current_user.role) }}">
       <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
     </a>
   </li>
 
   {% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
   <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('members.list_members') }}">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('members.') %}active{% endif %}"
+       href="{{ url_for('members.list_members') }}">
       <i class="bi bi-people"></i> <span>Members</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
+  <li class="nav-item">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('families.') %}active{% endif %}"
+       href="{{ url_for('families.list_families') }}">
+      <i class="bi bi-house-heart"></i> <span>Families</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if current_user.role in ['super_admin', 'admin'] %}
+  <li class="nav-item">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('ministries.') %}active{% endif %}"
+       href="{{ url_for('ministries.list_ministries') }}">
+      <i class="bi bi-diagram-3"></i> <span>Ministries</span>
+    </a>
+  </li>
+  {% endif %}
+
+  {% if current_user.role == 'super_admin' %}
+  <li class="nav-item">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('users.') %}active{% endif %}"
+       href="{{ url_for('users.list_users') }}">
+      <i class="bi bi-person-badge"></i> <span>Users</span>
     </a>
   </li>
   {% endif %}

@@ -19,18 +19,17 @@ class Member(db.Model):
     email = db.Column(db.String(120))
     marital_status = db.Column(db.String(20))           # Single, Married, etc.
 
-    # ── Address ──────────────────────────────────────────────
-    address_line1 = db.Column(db.String(200))
+    # ── Address 
     gps_address = db.Column(db.String(50))
     hometown = db.Column(db.String(80))
     street_name = db.Column(db.String(120))
     city = db.Column(db.String(80))
 
-    # ── Family ───────────────────────────────────────────────
+    # ── Family
     parent_name = db.Column(db.String(120))
     parent_relationship = db.Column(db.String(40))
 
-    # ── Spiritual ────────────────────────────────────────────
+    # ── Spiritual
     member_type = db.Column(db.String(80))              # free text for now
     holyghost_baptism = db.Column(db.Boolean, default=False)
     date_of_holy_spirit_baptism = db.Column(db.Date)
@@ -42,6 +41,9 @@ class Member(db.Model):
     officiating_minister_baptism = db.Column(db.String(120))
     officiating_ministers_district = db.Column(db.String(120))
     communicant = db.Column(db.Boolean, default=False)
+
+    # ── Family Group
+    family_id = db.Column(db.Integer, db.ForeignKey("families.id"), nullable=True, index=True)
 
     # ── Education / Work 
     occupation = db.Column(db.String(120))

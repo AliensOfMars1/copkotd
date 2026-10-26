@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ family.name }} — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="mb-0">{{ family.name }}</h2>
+    {% if family.description %}<p class="text-muted small mb-0">{{ family.description }}</p>{% endif %}
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{{ url_for('families.list_families') }}">Back</a>
+    {% if current_user.role in ['super_admin', 'admin'] %}
+    <a class="btn btn-outline-primary"
+       href="{{ url_for('families.edit_family', family_id=family.id) }}">Edit</a>
+    {% endif %}
+  </div>
+</div>
+
+<p class="text-muted">{{ members|length }} member(s) in this family.</p>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in members %}
+      <tr>
+        <td>
+          <a href="{{ url_for('members.view_member', member_id=m.id) }}">{{ m.full_name }}</a>
+        </td>
+        <td>{{ m.gender or "—" }}</td>
+        <td>{{ m.phone or "—" }}</td>
+        <td>
+          <span class="badge bg-{{ 'success' if m.membership_status == 'active' else 'secondary' }}">
+            {{ m.membership_status|capitalize }}
+          </span>
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('members.view_member', member_id=m.id) }}">View</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No members in this family yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

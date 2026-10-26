@@ -2016,3 +2016,30 @@ body {
   width: 22px;
   text-align: center;
 }
+
+/* ── Staff login links ─────────────────────────────────── */
+.footer-bottom-links .staff-login {
+    opacity: 0.85;
+    font-size: 0.9em;
+    color: #c9a227;
+    font-weight: 600;
+}
+.footer-bottom-links .staff-login:hover {
+    opacity: 1;
+    color: #e6c34a;
+}
+
+/* Sidebar Staff Login (About section) */
+.mobile-menu-list a[href*="/auth/login"] {
+    color: #c9a227;
+    font-weight: 600;
+}
+
+/* Bottom legal section Staff Login */
+.mobile-menu-legal .staff-login-mobile {
+    color: #c9a227;
+    font-weight: 600;
+}
+.mobile-menu-legal .staff-login-mobile:hover {
+    color: #e6c34a;
+}

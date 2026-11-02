@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Wellness | The Church Of Pentecost KOTD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/health.css') }}">
+</head>
+<body>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+            <div class="nav-brand">
+                <div class="logo-icon"><img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo"></div>
+                <span class="logo-text">THE CHURCH OF PENTECOST<br>Kwabenya Central English Asm</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#hero" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#welcomesection" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#sermonsection" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#eventssection" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('announcements.announcements') }}" class="nav-link">Announcements</a></li>
+                <li class="nav-item"><a href="{{ url_for('gallery.gallery') }}" class="nav-link">Gallery</a></li>
+                <li class="nav-item"><a href="{{ url_for('health.health_list') }}" class="nav-link active">Health</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#ministriessection" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#givingsection" class="nav-link cta-nav">Give</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <div class="logo-icon"><img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo"></div>
+                    <span>THE CHURCH OF PENTECOST KOTD</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">EXPLORE</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('main.index') }}#eventssection">Events</a></li>
+                        <li><a href="{{ url_for('announcements.announcements') }}">Announcements</a></li>
+                        <li><a href="{{ url_for('gallery.gallery') }}">Gallery</a></li>
+                        <li><a href="{{ url_for('health.health_list') }}">Health</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">ABOUT</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}#welcomesection">Who We Are</a></li>
+                        <li><a href="{{ url_for('main.index') }}#ministriessection">Ministries</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Staff Only Login</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-contact">
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                    <p>📍 opposite Papa's Pizza- Kwabenya</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="health-page">
+        <div class="health-page-header">
+            <span class="section-label">Health & Wellness</span>
+            <h1 class="section-title">Health Corner</h1>
+            <p class="health-page-subtitle">
+                Practical health insights and wellness articles from our medical team.
+            </p>
+        </div>
+
+        {% if articles %}
+        <div class="health-grid">
+            {% for a in articles %}
+            <a href="{{ url_for('health.health_detail', slug=a.slug) }}" class="health-card">
+                <div class="health-card-image">
+                    {% if a.cover_image_url %}
+                        <img src="{{ a.cover_image_url }}" alt="{{ a.title }}" loading="lazy">
+                    {% else %}
+                        <div class="health-card-placeholder">💊</div>
+                    {% endif %}
+                </div>
+                <div class="health-card-body">
+                    {% if a.category %}
+                    <span class="health-category-badge">{{ a.category }}</span>
+                    {% endif %}
+                    <h2 class="health-card-title">{{ a.title }}</h2>
+                    {% if a.summary %}
+                    <p class="health-card-summary">{{ a.summary }}</p>
+                    {% endif %}
+                    <div class="health-card-meta">
+                        <span>{{ a.author_name or 'Health Team' }}</span>
+                        <span>·</span>
+                        <span>{{ a.published_at.strftime('%b %d, %Y') if a.published_at else '' }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="health-empty">
+            <p>No health articles have been published yet. Check back soon!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p>&copy; 2026 The Church Of Pentecost KOTD. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="{{ url_for('main.index') }}">Home</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login">Staff Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    hamburger.addEventListener('click', () => {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    document.querySelectorAll('.mobile-menu-list a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    </script>
+</body>
+</html>

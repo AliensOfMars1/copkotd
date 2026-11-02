@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/indexhelper.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/health.css') }}">
 
 </head>
 <body>
@@ -38,8 +39,9 @@
                 <li class="nav-item"><a href="#welcomesection" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="#sermonsection" class="nav-link">Sermons</a></li>
                 <li class="nav-item"><a href="#eventssection" class="nav-link">Events</a></li>
-                <li class="nav-item"><a href="#announcements" class="nav-link">Announcements</a></li>
+                <li class="nav-item"><a href="{{ url_for('announcements.announcements') }}" class="nav-link">Announcements</a></li>
                 <li class="nav-item"><a href="{{ url_for('gallery.gallery') }}" class="nav-link">Gallery</a></li>
+                <li class="nav-item"><a href="{{ url_for('health.health_list') }}" class="nav-link">Health</a></li>
                 <li class="nav-item"><a href="#ministriessection" class="nav-link">Ministries</a></li>
                 <li class="nav-item"><a href="#givingsection" class="nav-link cta-nav">Give</a></li>
             </ul>
@@ -64,7 +66,9 @@
                     <ul class="mobile-menu-list">
                         <li><a href="#">Worship with us</a></li>
                         <li><a href="#eventssection">Events <span class="menu-subtitle">Meaningful experiences</span></a></li>
-                        <li><a href="#announcements">Announcements <span class="menu-subtitle">Latest updates</span></a></li>
+                        <li><a href="{{ url_for('announcements.announcements') }}">Announcements <span class="menu-subtitle">Latest updates</span></a></li>
+                        <li><a href="{{ url_for('gallery.gallery') }}">Gallery <span class="menu-subtitle">Photos & Memories</span></a></li>
+                        <li><a href="{{ url_for('health.health_list') }}">Health <span class="menu-subtitle">Articles & Wellness</span></a></li>
                         <li><a href="#">Salvation <span class="menu-subtitle">Receive God's grace</span></a></li>
                         <li><a href="#">Baptism <span class="menu-subtitle">Celebrate new beginnings</span></a></li>
                         <li><a href="#">Need Prayer? <span class="menu-subtitle">Support through faith</span></a></li>
@@ -72,7 +76,7 @@
                 </div>
                 <div class="mobile-menu-section">
                     <h3 class="mobile-menu-title">DISCOVER</h3>
-                    <ul class="mobile-menu-list">
+                    <ul class="mobile-menu-list"> 
                         <li><a href="#sermonsection">Sermons</a></li>
                         <li><a href="#">Study Guides</a></li>
                     </ul>
@@ -181,12 +185,12 @@
             </div>
             <div class="welcome-grid">
                 <div class="welcome-text fade-in">
-                    <p class="lead-text">At The Church of Pentecost KOTD, we believe that everyone has a story and a purpose. Whether you're exploring faith for the first time or looking for a church to call home, you are welcome here.</p>
+                    <p class="lead-text">At The Church of Pentecost (Kwabenya Central English), we believe that everyone has a story and a purpose. Whether you're exploring faith for the first time or looking for a church to call home, you are welcome here.</p>
                     <p>We're a community of believers committed to loving God, loving people, and serving our nation. No matter your background, doubts, or struggles come as you are.</p>
                     <a href="#" class="btn btn-secondary">Learn More About Us</a>
                 </div>
                 <div class="welcome-image fade-in">
-                    <img src="{{ url_for('static', filename='images/kotdcommunity.jpeg') }}" alt="Church Community at The Church of Pentecost KOTD" class="welcome-img">
+                    <img src="{{ url_for('static', filename='images/kotdcommunity.jpeg') }}" alt="Church Community at The Church of Pentecost Kwabenya Central English" class="welcome-img">
                 </div>
             </div>
         </div>
@@ -220,26 +224,7 @@
         </div>
     </section>
 
-    <!-- ANNOUNCEMENTS -->
-    {% if announcements %}
-    <section class="announcements-section" id="announcements">
-        <div class="container">
-            <div class="section-header fade-in">
-                <span class="section-label">Stay Informed</span>
-                <h2 class="section-title">Latest Announcements</h2>
-            </div>
-            <div class="announcement-list">
-                {% for a in announcements %}
-                <div class="announcement-card fade-in">
-                    <h4>{{ a.title }}</h4>
-                    <p>{{ a.body }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
+   
     <!-- MINISTRIES -->
     <section class="ministries section-padding" id="ministriessection">
         <div class="container">
@@ -291,6 +276,38 @@
             </div>
         </div>
     </section>
+
+    {% if latest_health %}
+    <section class="health-teaser">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-label">Health Corner</span>
+                <h2 class="section-title">Health & Wellness</h2>
+            </div>
+            <div class="health-thin-list">
+                {% for article in latest_health %}
+                <a href="{{ url_for('health.health_detail', slug=article.slug) }}" class="health-thin-card">
+                    {% if article.cover_image_url %}
+                    <img src="{{ article.cover_image_url }}" alt="" style="width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">
+                    {% else %}
+                    <div style="width: 48px; height: 48px; border-radius: 4px; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">💊</div>
+                    {% endif %}
+                    <div style="flex: 1; min-width: 0; overflow: hidden;">
+                        {% if article.category %}
+                        <div style="font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: #92400e; letter-spacing: 0.05em;">{{ article.category }}</div>
+                        {% endif %}
+                        <div style="font-size: 0.9rem; font-weight: 700; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ article.title }}</div>
+                    </div>
+                    <span style="font-size: 0.7rem; color: #c4a35a; font-weight: 700; white-space: nowrap; flex-shrink: 0;">→</span>
+                </a>
+                {% endfor %}
+            </div>
+            <div class="health-teaser-cta">
+                <a href="{{ url_for('health.health_list') }}" class="btn btn-secondary">View All Health Articles</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <!-- EVENTS (counter + top 3, expand on View All) -->
     <section class="events section-padding bg-light" id="eventssection">
@@ -495,11 +512,11 @@
                     <h4>Contact Us</h4>
                     <p>📍 Opposite Papa's Pizza<br>Kwabenya, Accra</p>
                     <p>📞 (054)-859-3725<br>📞 (055)-987-4842</p>
-                    <p>✉️ info@kotdchurch.org</p>
+                    <p>✉️ info@thecopkwabenaycentral.org</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 The Church Of Pentecost KOTD. All rights reserved.</p>
+                <p>&copy; 2026 The Church Of Pentecost Kwabenya Central English . All rights reserved. Developed by  CodesOfAnAlien Development.</p>
                 <div class="footer-legal">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>

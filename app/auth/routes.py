@@ -19,6 +19,7 @@ DASHBOARD_ROUTES = {
     Role.COMMUNICATIONS_OFFICER: "dashboard.communications_officer",
     Role.PROGRAMS_OFFICER: "dashboard.programs_officer",
     Role.MINISTRY_LEADER: "dashboard.ministry_leader",
+    Role.HEALTH_OFFICER: "dashboard.health_officer",
 }
 
 

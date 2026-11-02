@@ -8,11 +8,12 @@ class Role:
     COMMUNICATIONS_OFFICER = "communications_officer"
     PROGRAMS_OFFICER = "programs_officer"
     MINISTRY_LEADER = "ministry_leader"
+    HEALTH_OFFICER = "health_officer"
 
     ALL = [
         SUPER_ADMIN, ADMIN, FINANCIAL_OFFICER, RECORDS_OFFICER,
         COMPLIANCE_OFFICER, DATA_OFFICER, COMMUNICATIONS_OFFICER,
-        PROGRAMS_OFFICER, MINISTRY_LEADER,
+        PROGRAMS_OFFICER, MINISTRY_LEADER, HEALTH_OFFICER,
     ]
 
     LABELS = {
@@ -25,4 +26,5 @@ class Role:
         COMMUNICATIONS_OFFICER: "Communications Officer",
         PROGRAMS_OFFICER: "Programs Officer",
         MINISTRY_LEADER: "Ministry Leader",
+        HEALTH_OFFICER: "Health Officer",
     }

@@ -29,6 +29,15 @@ def create_app(config_class=Config):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+    # ── Markdown filter ────────────────────────────────
+    import markdown as md
+
+    @app.template_filter("markdown")
+    def markdown_filter(text):
+        if not text:
+            return ""
+        return md.markdown(text, extensions=["fenced_code", "tables", "nl2br"])
+
     # Register blueprints
     from app.main.routes import main_bp
     from app.auth.routes import auth_bp
@@ -38,14 +47,13 @@ def create_app(config_class=Config):
     from app.ministries.routes import ministries_bp
     from app.families.routes import families_bp
     from app.content.routes import content_bp
-    from app.main.sitemap import sitemap_bp
-    from app.main.gallery import gallery_bp
     from app.content.gallery_routes import gallery_admin_bp
+    from app.main.gallery import gallery_bp
+    from app.main.sitemap import sitemap_bp
+    from app.main.announcements import announcements_bp
+    from app.content.health_admin import health_admin_bp
+    from app.main.health import health_bp
 
-    app.register_blueprint(gallery_admin_bp)
-    app.register_blueprint(gallery_bp)
-    app.register_blueprint(sitemap_bp)
-    app.register_blueprint(content_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
@@ -53,5 +61,12 @@ def create_app(config_class=Config):
     app.register_blueprint(users_bp)
     app.register_blueprint(ministries_bp)
     app.register_blueprint(families_bp)
+    app.register_blueprint(content_bp)
+    app.register_blueprint(gallery_admin_bp)
+    app.register_blueprint(gallery_bp)
+    app.register_blueprint(sitemap_bp)
+    app.register_blueprint(announcements_bp)
+    app.register_blueprint(health_admin_bp)
+    app.register_blueprint(health_bp)
 
     return app

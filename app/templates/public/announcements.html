@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements | The Church Of Pentecost KOTD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/announcements.css') }}">
+</head>
+<body>
+
+    <!-- NAVIGATION (same as gallery) -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                </div>
+                <span class="logo-text">
+                    THE CHURCH OF PENTECOST<br>
+                    Kwabenya Central English Asm
+                </span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#hero" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#welcomesection" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#sermonsection" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#eventssection" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('announcements.announcements') }}" class="nav-link active">Announcements</a></li>
+                <li class="nav-item"><a href="{{ url_for('gallery.gallery') }}" class="nav-link">Gallery</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#ministriessection" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#givingsection" class="nav-link cta-nav">Give</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <div class="logo-icon">
+                        <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                    </div>
+                    <span>THE CHURCH OF PENTECOST KOTD</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">EXPLORE</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('main.index') }}#eventssection">Events</a></li>
+                        <li><a href="{{ url_for('announcements.announcements') }}">Announcements</a></li>
+                        <li><a href="{{ url_for('gallery.gallery') }}">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">ABOUT</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}#welcomesection">Who We Are</a></li>
+                        <li><a href="{{ url_for('main.index') }}#ministriessection">Ministries</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Staff Only Login</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-contact">
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                    <p>📍 opposite Papa's Pizza- Kwabenya</p>
+                </div>
+                <div class="mobile-menu-copyright">
+                    <p>© 2026 The Church Of Pentecost KOTD</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="announcements-page">
+        <div class="announcements-header">
+            <span class="section-label">Stay Informed</span>
+            <h1 class="section-title">Latest Announcements</h1>
+            <p class="announcements-subtitle">Important updates, notices, and reminders from the church.</p>
+        </div>
+
+        {% if announcements %}
+        <div class="announcements-grid">
+            {% for a in announcements %}
+            <article class="announcement-card">
+                <div class="announcement-icon">📢</div>
+                <div class="announcement-body">
+                    <div class="announcement-title-row">
+                        <h2 class="announcement-title">{{ a.title }}</h2>
+                        {% if now and (now - a.created_at).days < 7 %}
+                        <span class="announcement-new">NEW</span>
+                        {% endif %}
+                    </div>
+                    <p class="announcement-text">{{ a.body }}</p>
+                    <div class="announcement-meta">
+                        <span class="announcement-date">
+                            {{ a.created_at.strftime('%B %d, %Y') }}
+                        </span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="announcements-empty">
+            <p>No announcements right now. Check back soon!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p>&copy; 2026 The Church Of Pentecost Kwabenya Central English . All rights reserved. Developed by  CodesOfAnAlien Development</p>
+                <div class="footer-bottom-links">
+                    <a href="{{ url_for('main.index') }}">Home</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login">Staff Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    hamburger.addEventListener('click', () => {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    document.querySelectorAll('.mobile-menu-list a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    </script>
+</body>
+</html>

@@ -91,3 +91,20 @@ def programs_officer():
 @role_required(Role.MINISTRY_LEADER, Role.SUPER_ADMIN)
 def ministry_leader():
     return render_template("dashboard/ministry_leader.html")
+
+@dashboard_bp.route("/health-officer")
+@login_required
+@role_required(Role.HEALTH_OFFICER, Role.SUPER_ADMIN)
+def health_officer():
+    from app.models.health import HealthArticle
+    articles = HealthArticle.query.order_by(HealthArticle.created_at.desc()).all()
+    stats = {
+        "total": len(articles),
+        "published": sum(1 for a in articles if a.is_published),
+        "drafts": sum(1 for a in articles if not a.is_published),
+    }
+    return render_template(
+        "dashboard/health_officer.html",
+        articles=articles,
+        stats=stats,
+    )

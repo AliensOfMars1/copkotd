@@ -54,6 +54,15 @@
   {# More nav links added per phase #}
 </ul>
 
+{% if current_user.role in ['super_admin', 'health_officer'] %}
+<li class="nav-item">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('health_admin.') %}active{% endif %}"
+       href="{{ url_for('health_admin.list_articles') }}">
+        <i class="bi bi-heart-pulse"></i> <span>Health Articles</span>
+    </a>
+</li>
+{% endif %}
+
 {# ── User panel at the bottom ────────────────────────────── #}
 <div class="sidebar-user">
   <div class="small text-uppercase text-secondary mb-1">Signed in as</div>

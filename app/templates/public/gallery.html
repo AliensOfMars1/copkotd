@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | The Church Of Pentecost KOTD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+</head>
+<body>
+
+    <!-- NAVIGATION (same as homepage) -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                </div>
+                <span class="logo-text">
+                    THE CHURCH OF PENTECOST<br>
+                    Kwabenya Central English Asm
+                </span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#hero" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#welcomesection" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#sermonsection" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#eventssection" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#announcements" class="nav-link">Announcements</a></li>
+                <li class="nav-item"><a href="{{ url_for('gallery.gallery') }}" class="nav-link active">Gallery</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#ministriessection" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#givingsection" class="nav-link cta-nav">Give</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <div class="logo-icon">
+                        <img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo">
+                    </div>
+                    <span>THE CHURCH OF PENTECOST KOTD</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">EXPLORE</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('main.index') }}#eventssection">Events</a></li>
+                        <li><a href="{{ url_for('main.index') }}#announcements">Announcements</a></li>
+                        <li><a href="{{ url_for('gallery.gallery') }}">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">ABOUT</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}#welcomesection">Who We Are</a></li>
+                        <li><a href="{{ url_for('main.index') }}#ministriessection">Ministries</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Staff Only Login</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-contact">
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                    <p>📍 opposite Papa's Pizza- Kwabenya</p>
+                </div>
+                <div class="mobile-menu-copyright">
+                    <p>© 2026 The Church Of Pentecost KOTD</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GALLERY -->
+    <section class="gallery-page">
+        <div class="gallery-header">
+            <span class="section-label">Our Journey</span>
+            <h1 class="section-title">Moments in Pictures</h1>
+            <p class="gallery-subtitle">Glimpses of worship, fellowship, and community life at KOTD.</p>
+        </div>
+
+        {% if photos %}
+        <div class="gallery-grid" id="gallery-grid">
+            {% for photo in photos %}
+            <div class="gallery-item"
+                 data-image="{{ photo.image_url }}"
+                 data-title="{{ photo.title or '' }}"
+                 data-description="{{ photo.description or '' }}"
+                 data-index="{{ loop.index0 }}">
+                <img src="{{ photo.image_url }}" alt="{{ photo.title or 'Gallery photo' }}" loading="lazy">
+                {% if photo.title or photo.description %}
+                <div class="gallery-item-details">
+                    {% if photo.title %}<strong>{{ photo.title }}</strong>{% endif %}
+                    {% if photo.description %}<span>{{ photo.description }}</span>{% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="gallery-empty">
+            <p>No photos yet. Check back soon!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+        <button class="lightbox-arrow lightbox-prev" id="lightbox-prev" aria-label="Previous photo">❮</button>
+        <button class="lightbox-arrow lightbox-next" id="lightbox-next" aria-label="Next photo">❯</button>
+
+        <div class="lightbox-inner">
+            <img src="" alt="" class="lightbox-img" id="lightbox-img">
+            <div class="lightbox-caption" id="lightbox-caption">
+                <strong id="lightbox-title"></strong>
+                <span id="lightbox-description"></span>
+            </div>
+        </div>
+
+        <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+
+    <!-- FOOTER (minimal) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p>&copy; 2026 The Church Of Pentecost KOTD. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="{{ url_for('main.index') }}">Home</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login">Staff Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // ── Mobile menu ─────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    hamburger.addEventListener('click', () => {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    document.querySelectorAll('.mobile-menu-list a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    // ── Lightbox ────────────────────────────────
+    (function() {
+        const items = Array.from(document.querySelectorAll('.gallery-item'));
+        if (!items.length) return;
+
+        const lightbox = document.getElementById('lightbox');
+        const img = document.getElementById('lightbox-img');
+        const title = document.getElementById('lightbox-title');
+        const description = document.getElementById('lightbox-description');
+        const caption = document.getElementById('lightbox-caption');
+        const counter = document.getElementById('lightbox-counter');
+        const btnClose = document.getElementById('lightbox-close');
+        const btnPrev = document.getElementById('lightbox-prev');
+        const btnNext = document.getElementById('lightbox-next');
+
+        let currentIndex = 0;
+
+        function show(index) {
+            const item = items[index];
+            if (!item) return;
+
+            const src = item.dataset.image;
+            const t = item.dataset.title || '';
+            const d = item.dataset.description || '';
+
+            img.src = src;
+            img.alt = t || 'Gallery photo';
+
+            if (t || d) {
+                caption.style.display = 'block';
+                title.textContent = t;
+                description.textContent = d;
+            } else {
+                caption.style.display = 'none';
+            }
+
+            counter.textContent = (index + 1) + ' / ' + items.length;
+
+            // Hide prev/next if only 1 photo
+            if (items.length <= 1) {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'none';
+            } else {
+                btnPrev.style.display = 'flex';
+                btnNext.style.display = 'flex';
+            }
+
+            currentIndex = index;
+        }
+
+        function open(index) {
+            show(index);
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function close() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            img.src = '';
+        }
+
+        function next() { show((currentIndex + 1) % items.length); }
+        function prev() { show((currentIndex - 1 + items.length) % items.length); }
+
+        items.forEach((item, i) => {
+            item.addEventListener('click', () => open(i));
+        });
+
+        btnClose.addEventListener('click', close);
+        btnNext.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+        btnPrev.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+
+        // Click outside the image closes
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) close();
+        });
+
+        // Escape + arrow keys
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') close();
+            if (e.key === 'ArrowRight') next();
+            if (e.key === 'ArrowLeft') prev();
+        });
+
+        // Swipe on mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) prev();
+                else next();
+            }
+        }, { passive: true });
+    })();
+    </script>
+</body>
+</html>

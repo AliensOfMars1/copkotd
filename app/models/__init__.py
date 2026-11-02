@@ -4,6 +4,7 @@ from app.models.member import Member
 from app.models.family import Family
 from app.models.homepage import HomepageContent
 from app.models.site_setting import SiteSetting
+from app.models.gallery import GalleryPhoto
 
 __all__ = [
     "Ministry",
@@ -12,4 +13,5 @@ __all__ = [
     "Family",
     "HomepageContent",
     "SiteSetting",
+    "GalleryPhoto",
 ]

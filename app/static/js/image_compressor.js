@@ -2,7 +2,9 @@
 //
 // Client-side image compressor.
 // Compresses only if the file exceeds the size limit for its type.
-// Converts everything to JPEG 
+// Converts everything to JPEG (loses transparency — acceptable for KOTD).
+// Supports single-file and multi-file inputs.
+
 const COMPRESSOR_SIZES = {
     member: { maxSizeMB: 2, maxWidth: 800, maxHeight: 800, quality: 0.85 },
     event:  { maxSizeMB: 3, maxWidth: 1200, maxHeight: 1200, quality: 0.8 },
@@ -89,31 +91,55 @@ function setupImageCompression(inputId, type = "member", callback = null) {
     const maxSizeBytes = config.maxSizeMB * 1024 * 1024;
 
     input.addEventListener("change", async function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
+        const files = Array.from(event.target.files);
+        if (!files.length) return;
 
-        // Only compress images
-        if (!file.type.startsWith("image/")) return;
+        // Only process image files
+        const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+        if (!imageFiles.length) return;
 
-        const originalSizeMB = file.size / (1024 * 1024);
+        const parent = input.parentNode;
+        const existingMsg = parent.querySelector(".compression-msg");
+        if (existingMsg) existingMsg.remove();
 
-        // Show "will compress" message only if needed
-        if (originalSizeMB > config.maxSizeMB) {
-            const parent = input.parentNode;
-            const existingMsg = parent.querySelector(".compression-msg");
-            if (existingMsg) existingMsg.remove();
+        // Check which files need compression
+        const needCompression = imageFiles.filter((f) => f.size > maxSizeBytes);
 
-            const loadingDiv = document.createElement("div");
-            loadingDiv.className = "compression-msg form-text text-primary";
-            loadingDiv.innerHTML =
-                '<i class="bi bi-arrow-repeat"></i> Compressing image (' +
-                originalSizeMB.toFixed(1) +
-                "MB → " +
-                config.maxSizeMB +
-                "MB max)...";
-            parent.appendChild(loadingDiv);
+        // If nothing needs compression, hand back original files unchanged
+        if (needCompression.length === 0) {
+            if (callback && typeof callback === "function") {
+                callback(files);
+            }
+            return;
+        }
 
-            try {
+        // Show a single loading message
+        const loadingDiv = document.createElement("div");
+        loadingDiv.className = "compression-msg form-text text-primary";
+        loadingDiv.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i> Compressing ' +
+            needCompression.length +
+            " photo(s)...";
+        parent.appendChild(loadingDiv);
+
+        try {
+            const dataTransfer = new DataTransfer();
+            let compressedCount = 0;
+
+            for (const file of files) {
+                // Non-image files: add as-is
+                if (!file.type.startsWith("image/")) {
+                    dataTransfer.items.add(file);
+                    continue;
+                }
+
+                // Small files: add as-is
+                if (file.size <= maxSizeBytes) {
+                    dataTransfer.items.add(file);
+                    continue;
+                }
+
+                // Large images: compress
                 const compressedBlob = await compressImage(
                     file,
                     config.maxWidth,
@@ -122,47 +148,44 @@ function setupImageCompression(inputId, type = "member", callback = null) {
                     maxSizeBytes
                 );
 
-                loadingDiv.remove();
+                const compressedFile = new File(
+                    [compressedBlob],
+                    file.name.replace(/\.[^.]+$/, ".jpg"),
+                    { type: "image/jpeg", lastModified: Date.now() }
+                );
 
-                const compressedFile = new File([compressedBlob], file.name.replace(/\.[^.]+$/, ".jpg"), {
-                    type: "image/jpeg",
-                    lastModified: Date.now(),
-                });
-
-                const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(compressedFile);
-                input.files = dataTransfer.files;
-
-                const successDiv = document.createElement("div");
-                successDiv.className = "compression-msg form-text text-success";
-                successDiv.innerHTML =
-                    '<i class="bi bi-check-circle"></i> Compressed to ' +
-                    (compressedBlob.size / (1024 * 1024)).toFixed(2) +
-                    " MB";
-                parent.appendChild(successDiv);
-                setTimeout(() => successDiv.remove(), 3000);
-
-                if (callback && typeof callback === "function") {
-                    callback(compressedFile);
-                }
-            } catch (error) {
-                console.error("Compression failed:", error);
-                loadingDiv.remove();
-
-                const errDiv = document.createElement("div");
-                errDiv.className = "compression-msg form-text text-warning";
-                errDiv.innerHTML =
-                    '<i class="bi bi-exclamation-triangle"></i> Compression failed — original will be uploaded';
-                parent.appendChild(errDiv);
-                setTimeout(() => errDiv.remove(), 4000);
-
-                if (callback && typeof callback === "function") {
-                    callback(file);
-                }
+                compressedCount++;
             }
-        } else {
+
+            loadingDiv.remove();
+            input.files = dataTransfer.files;
+
+            const successDiv = document.createElement("div");
+            successDiv.className = "compression-msg form-text text-success";
+            successDiv.innerHTML =
+                '<i class="bi bi-check-circle"></i> ' +
+                compressedCount +
+                " photo(s) compressed and ready to upload";
+            parent.appendChild(successDiv);
+            setTimeout(() => successDiv.remove(), 4000);
+
             if (callback && typeof callback === "function") {
-                callback(file);
+                callback(dataTransfer.files);
+            }
+        } catch (error) {
+            console.error("Compression failed:", error);
+            loadingDiv.remove();
+
+            const errDiv = document.createElement("div");
+            errDiv.className = "compression-msg form-text text-warning";
+            errDiv.innerHTML =
+                '<i class="bi bi-exclamation-triangle"></i> Some compression failed — originals will be used';
+            parent.appendChild(errDiv);
+            setTimeout(() => errDiv.remove(), 4000);
+
+            if (callback && typeof callback === "function") {
+                callback(files);
             }
         }
     });

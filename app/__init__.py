@@ -39,8 +39,11 @@ def create_app(config_class=Config):
     from app.families.routes import families_bp
     from app.content.routes import content_bp
     from app.main.sitemap import sitemap_bp
+    from app.main.gallery import gallery_bp
+    from app.content.gallery_routes import gallery_admin_bp
 
-
+    app.register_blueprint(gallery_admin_bp)
+    app.register_blueprint(gallery_bp)
     app.register_blueprint(sitemap_bp)
     app.register_blueprint(content_bp)
     app.register_blueprint(main_bp)

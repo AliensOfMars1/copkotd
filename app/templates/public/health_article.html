@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }} | KOTD Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/health.css') }}">
+</head>
+<body>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+            <div class="nav-brand">
+                <div class="logo-icon"><img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo"></div>
+                <span class="logo-text">THE CHURCH OF PENTECOST<br>Kwabenya Central English Asm</span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#hero" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#welcomesection" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#sermonsection" class="nav-link">Sermons</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#eventssection" class="nav-link">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('announcements.announcements') }}" class="nav-link">Announcements</a></li>
+                <li class="nav-item"><a href="{{ url_for('gallery.gallery') }}" class="nav-link">Gallery</a></li>
+                <li class="nav-item"><a href="{{ url_for('health.health_list') }}" class="nav-link active">Health</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#ministriessection" class="nav-link">Ministries</a></li>
+                <li class="nav-item"><a href="{{ url_for('main.index') }}#givingsection" class="nav-link cta-nav">Give</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <div class="logo-icon"><img src="{{ url_for('static', filename='images/kotdlogo.jpg') }}" alt="Logo"></div>
+                    <span>THE CHURCH OF PENTECOST KOTD</span>
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-section">
+                    <h3 class="mobile-menu-title">EXPLORE</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('health.health_list') }}">All Health Articles</a></li>
+                    </ul>
+                </div>
+                <div class="mobile-menu-contact">
+                    <p>📞 (054)-859-3725 / (055)-987-4842</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <article class="health-article-page">
+        <a href="{{ url_for('health.health_list') }}" class="health-back-link">
+            ← Back to Health Articles
+        </a>
+
+        {% if article.category %}
+        <span class="health-category-badge health-article-category">{{ article.category }}</span>
+        {% endif %}
+
+        <h1 class="health-article-title">{{ article.title }}</h1>
+
+        <div class="health-article-meta">
+            <span><strong>By</strong> {{ article.author_name or 'Health Team' }}</span>
+            <span class="meta-dot">·</span>
+            <span>{{ article.published_at.strftime('%B %d, %Y') if article.published_at else '' }}</span>
+        </div>
+
+        {% if article.cover_image_url %}
+        <div class="health-article-cover">
+            <img src="{{ article.cover_image_url }}" alt="{{ article.title }}">
+        </div>
+        {% endif %}
+
+        <div class="health-article-body">
+            {{ article.body | markdown | safe }}
+        </div>
+
+        <div class="health-article-disclaimer">
+            <strong>Medical Disclaimer:</strong>
+            This article is for general informational purposes only and is not a substitute
+            for professional medical advice. Please consult a qualified healthcare provider
+            for personalized advice.
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <p>&copy; 2026 The Church Of Pentecost KOTD. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="{{ url_for('main.index') }}">Home</a>
+                    <a href="{{ url_for('health.health_list') }}">Health</a>
+                    <a href="{{ url_for('auth.login') }}" class="staff-login">Staff Login</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    hamburger.addEventListener('click', () => {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    </script>
+</body>
+</html>

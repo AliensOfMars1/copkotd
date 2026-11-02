@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, render_template
+from app.models.health import HealthArticle
 from app.models.homepage import HomepageContent
 from app.models.site_setting import SiteSetting
 from app.utils.youtube import get_youtube_id, get_youtube_thumbnail
@@ -11,14 +12,6 @@ main_bp = Blueprint("main", __name__)
 def index():
     now = datetime.utcnow()
 
-    # ── 1. Announcements (live, not expired) ────────────────
-    announcements = (
-        HomepageContent.query
-        .filter_by(content_type="announcement", is_published=True)
-        .filter((HomepageContent.expires_at == None) | (HomepageContent.expires_at > now))
-        .order_by(HomepageContent.created_at.desc())
-        .all()
-    )
 
     # ── 2. Events (live, not expired, next 3 by date) ───────
     events = (
@@ -50,6 +43,14 @@ def index():
         .first()
     )
 
+    latest_health = (
+        HealthArticle.query
+        .filter_by(is_published=True)
+        .order_by(HealthArticle.published_at.desc())
+        .limit(3)
+        .all()
+    )
+
     # Extract YouTube details if a sermon exists
     sermon_video_id = get_youtube_id(current_sermon.video_url) if current_sermon and current_sermon.video_url else None
     sermon_thumbnail = get_youtube_thumbnail(current_sermon.video_url) if current_sermon and current_sermon.video_url else None
@@ -57,12 +58,12 @@ def index():
 
     return render_template(
         "public/index.html",
-        announcements=announcements,
         events=events,
         current_sermon=current_sermon,
         sermon_video_id=sermon_video_id,
         sermon_thumbnail=sermon_thumbnail,
         services=services,
         settings=settings,
+        latest_health=latest_health,
     )
     

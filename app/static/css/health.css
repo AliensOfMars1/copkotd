@@ -1,0 +1,425 @@
+/* ============================================ */
+/* HEALTH PAGES + HOMEPAGE TEASER                */
+/* ============================================ */
+
+/* ── Public health page ─────────────────────── */
+.health-page {
+    padding: 140px 20px 80px;
+    background: #f9fafb;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.health-page-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.health-page-subtitle {
+    color: #6b7280;
+    font-size: 1.05rem;
+    margin-top: 1rem;
+    line-height: 1.7;
+}
+
+/* ── Article grid ───────────────────────────── */
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.75rem;
+}
+
+.health-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e5e7eb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.health-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.health-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.health-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.health-card:hover .health-card-image img {
+    transform: scale(1.05);
+}
+
+.health-card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.health-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.health-category-badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #92400e;
+    background: #fef3c7;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+}
+
+.health-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+}
+
+.health-card-summary {
+    color: #6b7280;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.health-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 0.85rem;
+}
+
+.health-empty {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: #9ca3af;
+    font-size: 1.05rem;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px dashed #e5e7eb;
+}
+
+/* ── Article detail page ────────────────────── */
+.health-article-page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 140px 20px 80px;
+}
+
+.health-back-link {
+    display: inline-block;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s ease;
+}
+
+.health-back-link:hover {
+    color: #c4a35a;
+}
+
+.health-article-category {
+    margin-bottom: 1rem;
+}
+
+.health-article-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+.health-article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.meta-dot {
+    opacity: 0.5;
+}
+
+.health-article-cover {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.health-article-cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.health-article-body {
+    color: #1f2937;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.health-article-body h1,
+.health-article-body h2,
+.health-article-body h3 {
+    color: #111827;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.health-article-body h1 { font-size: 1.85rem; }
+.health-article-body h2 { font-size: 1.5rem; }
+.health-article-body h3 { font-size: 1.25rem; }
+
+.health-article-body p {
+    margin-bottom: 1.25rem;
+}
+
+.health-article-body ul,
+.health-article-body ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+.health-article-body li {
+    margin-bottom: 0.5rem;
+}
+
+.health-article-body blockquote {
+    border-left: 4px solid #c4a35a;
+    padding-left: 1rem;
+    color: #6b7280;
+    font-style: italic;
+    margin: 1.5rem 0;
+}
+
+.health-article-body code {
+    background: #f3f4f6;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #be185d;
+}
+
+.health-article-body pre {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+}
+
+.health-article-body pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.health-article-disclaimer {
+    margin-top: 3rem;
+    padding: 1.25rem 1.5rem;
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    color: #78350f;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ============================================ */
+/* HOMEPAGE THIN TEASER — HORIZONTAL ON DESKTOP */
+/* ============================================ */
+.health-teaser {
+    padding: 2rem 0;
+    background: #f9fafb;
+}
+
+.health-teaser-cta {
+    text-align: center;
+}
+
+/* ── DEFAULT (desktop) — horizontal row of cards ── */
+.health-thin-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0.75rem;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.health-thin-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 360px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem 0.65rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.health-thin-card:hover {
+    border-color: #c4a35a;
+    box-shadow: 0 2px 8px rgba(196, 163, 90, 0.15);
+}
+
+/* Small square image on the left */
+.health-thin-card > img,
+.health-thin-image {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: block;
+    background: #fef3c7;
+}
+
+.health-thin-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #92400e;
+}
+
+/* Text content beside the image */
+.health-thin-content {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.health-thin-category {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #92400e;
+    line-height: 1;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.health-thin-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.25;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.health-thin-summary {
+    display: none;
+}
+
+.health-thin-arrow {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #c4a35a;
+    white-space: nowrap;
+}
+
+/* ── MOBILE — stack vertically ──────────────────── */
+@media (max-width: 768px) {
+    .health-page {
+        padding: 100px 15px 60px;
+    }
+
+    .health-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .health-article-page {
+        padding: 100px 15px 60px;
+    }
+
+    .health-article-title {
+        font-size: 1.75rem;
+    }
+
+    .health-article-meta {
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+    }
+
+    /* Stack teaser vertically */
+    .health-thin-list {
+        flex-direction: column;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .health-thin-card {
+        flex: 0 0 auto;
+        max-width: 100%;
+    }
+}

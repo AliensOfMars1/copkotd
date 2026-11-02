@@ -12,3 +12,4 @@ APScheduler
 openpyxl
 python-docx
 gunicorn
+cloudinary

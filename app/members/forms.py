@@ -4,6 +4,7 @@ from wtforms import (
 )
 from wtforms.validators import DataRequired, Optional, Email, Length
 from app.models.family import Family
+from flask_wtf.file import FileField, FileAllowed
 
 
 class MemberForm(FlaskForm):
@@ -38,6 +39,13 @@ class MemberForm(FlaskForm):
     place_of_birth = StringField("Place of Birth", validators=[Optional(), Length(max=120)])
     phone = StringField("Phone", validators=[Optional(), Length(max=30)])
     email = StringField("Email", validators=[Optional(), Email(), Length(max=120)])
+    photo = FileField(
+        "Photo",
+        validators=[
+            Optional(),
+            FileAllowed(["jpg", "jpeg", "png", "gif"], "Images only (jpg, png, gif)"),
+        ],
+    )
     marital_status = SelectField(
         "Marital Status",
         choices=[("", "—"), ("Single", "Single"), ("Married", "Married"),

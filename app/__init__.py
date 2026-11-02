@@ -15,6 +15,10 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     login_manager.init_app(app)
 
+    # Init Cloudinary
+    from app.utils.cloudinary import init_cloudinary
+    init_cloudinary(app)
+
     # Import models so Alembic sees them
     from app import models  # noqa
 
@@ -33,7 +37,12 @@ def create_app(config_class=Config):
     from app.users.routes import users_bp
     from app.ministries.routes import ministries_bp
     from app.families.routes import families_bp
+    from app.content.routes import content_bp
+    from app.main.sitemap import sitemap_bp
 
+
+    app.register_blueprint(sitemap_bp)
+    app.register_blueprint(content_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)

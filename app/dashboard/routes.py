@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 from app.auth.decorators import role_required
 from app.utils.roles import Role
+from app.utils.birthdays import get_upcoming_birthdays, get_todays_birthdays, days_until_birthday
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
@@ -21,7 +22,19 @@ def super_admin():
         "total_ministries": Ministry.query.filter_by(is_active=True).count(),
     }
     recent = Member.query.order_by(Member.created_at.desc()).limit(5).all()
-    return render_template("dashboard/super_admin.html", stats=stats, recent=recent)
+    
+    # Fetch birthdays
+    todays_bdays = get_todays_birthdays()
+    upcoming_bdays = get_upcoming_birthdays(days_ahead=7)
+    
+    return render_template(
+        "dashboard/super_admin.html", 
+        stats=stats, 
+        recent=recent,
+        todays_birthdays=todays_bdays,
+        upcoming_birthdays=upcoming_bdays,
+        days_until=days_until_birthday,
+    )
 
 
 @dashboard_bp.route("/admin")

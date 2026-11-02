@@ -2,9 +2,9 @@
 {% block title %}Users — KOTD{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <h2 class="mb-0">Staff Users</h2>
-  <a class="btn btn-primary" href="{{ url_for('users.create_user') }}">
+  <a class="btn btn-primary btn-sm" href="{{ url_for('users.create_user') }}">
     <i class="bi bi-person-plus"></i> New User
   </a>
 </div>

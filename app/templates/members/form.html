@@ -4,7 +4,7 @@
 {% block content %}
 <h2 class="mb-3">{{ "Edit" if member else "Add" }} Member</h2>
 
-<form method="post" novalidate>
+<form method="post" enctype="multipart/form-data" novalidate>
   {{ form.hidden_tag() }}
 
   {% macro render_field(field, cols=6) %}
@@ -30,6 +30,7 @@
       {{ render_field(form.first_name, 3) }}
       {{ render_field(form.middle_name, 3) }}
       {{ render_field(form.last_name, 4) }}
+      {{ render_field(form.photo, 12) }}
       {{ render_field(form.gender, 3) }}
       {{ render_field(form.date_of_birth, 3) }}
       {{ render_field(form.place_of_birth, 4) }}
@@ -115,4 +116,13 @@
     </a>
   </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/image_compressor.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    setupImageCompression('photo', 'member');
+  });
+</script>
 {% endblock %}

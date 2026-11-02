@@ -2,10 +2,10 @@
 {% block title %}Families — KOTD{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <h2 class="mb-0">Family Groups</h2>
   {% if current_user.role in ['super_admin', 'admin'] %}
-  <a class="btn btn-primary" href="{{ url_for('families.create_family') }}">
+  <a class="btn btn-primary btn-sm" href="{{ url_for('families.create_family') }}">
     <i class="bi bi-plus-lg"></i> New Family
   </a>
   {% endif %}

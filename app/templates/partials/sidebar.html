@@ -15,6 +15,15 @@
   </li>
   {% endif %}
 
+    {% if current_user.role in ['super_admin', 'admin', 'communications_officer'] %}
+  <li class="nav-item">
+    <a class="nav-link {% if request.endpoint and request.endpoint.startswith('content.') %}active{% endif %}"
+       href="{{ url_for('content.dashboard') }}">
+      <i class="bi bi-globe"></i> <span>Homepage Content</span>
+    </a>
+  </li>
+  {% endif %}
+
   {% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
   <li class="nav-item">
     <a class="nav-link {% if request.endpoint and request.endpoint.startswith('families.') %}active{% endif %}"

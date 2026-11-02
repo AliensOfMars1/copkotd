@@ -14,10 +14,12 @@ class Member(db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     gender = db.Column(db.String(10))                   # Male / Female
     date_of_birth = db.Column(db.Date)
+    birthday_public = db.Column(db.Boolean, default=True, nullable=False)
     place_of_birth = db.Column(db.String(120))
     phone = db.Column(db.String(30))
     email = db.Column(db.String(120))
     marital_status = db.Column(db.String(20))           # Single, Married, etc.
+    photo_url = db.Column(db.String(500), nullable=True) # Stores Cloudinary URL like: # https://res.cloudinary.com/your-cloud/image/upload/v1234/kotd/members/prince.jpg
 
     # ── Address 
     gps_address = db.Column(db.String(50))

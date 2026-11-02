@@ -7,31 +7,56 @@
   <a href="{{ url_for('content.dashboard') }}" class="btn btn-outline-secondary btn-sm">Back to Content</a>
 </div>
 
-{# ── Upload Form ────────────────────────────────── #}
+{# ── Upload Card ────────────────────────────────── #}
 <div class="card mb-4">
   <div class="card-header bg-white"><strong>Upload Photos</strong></div>
   <div class="card-body">
-    <form method="post" action="{{ url_for('gallery_admin.upload_photo') }}" enctype="multipart/form-data" id="upload-form">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label class="form-label">Photos (select multiple)</label>
-          <input type="file" name="photos" id="photos" class="form-control" multiple accept="image/*">
-          <div class="form-text">Tip: hold Ctrl (or Cmd on Mac) to select many photos at once.</div>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Title (optional, applied to all)</label>
-          <input type="text" name="title" class="form-control" placeholder="e.g. Youth Camp 2026">
-        </div>
-        <div class="col-12">
-          <label class="form-label">Description (optional)</label>
-          <input type="text" name="description" class="form-control">
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" id="upload-btn">Upload</button>
+
+    {# Hidden CSRF token for the JS-driven uploads #}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" id="csrf-helper">
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Photos (select multiple)</label>
+        <input type="file" id="photos" class="form-control" multiple accept="image/*">
+        <div class="form-text">Tip: hold Ctrl (or Cmd on Mac) to select many photos at once.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Title (optional, applied to all)</label>
+        <input type="text" id="upload-title" class="form-control" placeholder="e.g. Youth Camp 2026">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description (optional)</label>
+        <input type="text" id="upload-description" class="form-control">
+      </div>
+      <div class="col-12">
+        <button type="button" class="btn btn-primary" id="upload-btn">Upload</button>
+      </div>
+    </div>
+
+    {# Progress panel — hidden until upload starts #}
+    <div id="upload-progress" class="mt-4" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong id="progress-status">Preparing...</strong>
+        <span class="text-muted" id="progress-counter">0 / 0</span>
+      </div>
+      <div class="progress mb-2" style="height: 24px;">
+        <div id="progress-bar"
+             class="progress-bar progress-bar-striped progress-bar-animated"
+             role="progressbar"
+             style="width: 0%;"
+             aria-valuenow="0"
+             aria-valuemin="0"
+             aria-valuemax="100">
+          0%
         </div>
       </div>
-    </form>
+      <div id="upload-errors" class="alert alert-warning mt-2" style="display: none;"></div>
+      <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+              id="retry-failed-btn" style="display: none;">
+        Retry Failed Photos
+      </button>
+    </div>
   </div>
 </div>
 
@@ -72,20 +97,137 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/image_compressor.js') }}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+(function() {
+    const fileInput       = document.getElementById('photos');
+    const uploadBtn       = document.getElementById('upload-btn');
+    const titleInput      = document.getElementById('upload-title');
+    const descInput       = document.getElementById('upload-description');
+    const progressBox     = document.getElementById('upload-progress');
+    const progressBar     = document.getElementById('progress-bar');
+    const progressStatus  = document.getElementById('progress-status');
+    const progressCounter = document.getElementById('progress-counter');
+    const errorsBox       = document.getElementById('upload-errors');
+    const retryBtn        = document.getElementById('retry-failed-btn');
+
+    // Enable client-side compression on file select
     setupImageCompression('photos', 'event');
-  });
 
-  // Show upload progress when submitting
-  document.getElementById('upload-form').addEventListener('submit', function() {
-    const btn = document.getElementById('upload-btn');
-    const fileInput = document.getElementById('photos');
-    const count = fileInput && fileInput.files ? fileInput.files.length : 0;
+    let failedFiles = [];
 
-    if (count > 0) {
-      btn.disabled = true;
-      btn.innerHTML = `<i class="bi bi-arrow-repeat"></i> Uploading ${count} photo(s)... please wait`;
+    function setProgress(done, total, label) {
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+        progressBar.style.width = pct + '%';
+        progressBar.textContent = pct + '%';
+        progressBar.setAttribute('aria-valuenow', pct);
+        progressCounter.textContent = done + ' / ' + total;
+        if (label) progressStatus.textContent = label;
     }
-  });
+
+    function setProgressState(state) {
+        progressBar.className = 'progress-bar';
+        if (state === 'running') {
+            progressBar.classList.add(
+                'progress-bar-striped', 'progress-bar-animated', 'bg-primary'
+            );
+        } else if (state === 'success') {
+            progressBar.classList.add('bg-success');
+        } else if (state === 'error') {
+            progressBar.classList.add('bg-danger');
+        }
+    }
+
+    async function uploadOne(file, title, description) {
+        const csrfInput = document.querySelector('input[name="csrf_token"]');
+        const csrfToken = csrfInput ? csrfInput.value : '';
+
+        const formData = new FormData();
+        formData.append('photo', file);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('csrf_token', csrfToken);
+
+        const response = await fetch('{{ url_for("gallery_admin.upload_single_photo") }}', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRFToken': csrfToken },
+        });
+
+        if (!response.ok) {
+            let err = 'HTTP ' + response.status;
+            try {
+                const data = await response.json();
+                if (data && data.error) err = data.error;
+            } catch (e) {}
+            throw new Error(err);
+        }
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'Unknown error');
+        return data;
+    }
+
+    async function runUpload(files) {
+        const total = files.length;
+        failedFiles = [];
+        errorsBox.style.display = 'none';
+        errorsBox.innerHTML = '';
+        retryBtn.style.display = 'none';
+        progressBox.style.display = 'block';
+        uploadBtn.disabled = true;
+
+        const title = titleInput.value.trim();
+        const description = descInput.value.trim();
+
+        setProgressState('running');
+        setProgress(0, total, 'Starting upload...');
+
+        let done = 0;
+        for (const file of files) {
+            setProgress(done, total, `Uploading "${file.name}"...`);
+            try {
+                await uploadOne(file, title, description);
+                done++;
+                setProgress(done, total, `Uploaded ${done} of ${total}`);
+            } catch (err) {
+                console.error('Upload failed:', file.name, err);
+                failedFiles.push({ file, reason: err.message });
+                done++;
+                setProgress(done, total, `Uploaded ${done - failedFiles.length} of ${total} — ${failedFiles.length} failed`);
+            }
+        }
+
+        uploadBtn.disabled = false;
+
+        if (failedFiles.length === 0) {
+            setProgressState('success');
+            setProgress(total, total, `Done! Uploaded ${total} photo(s).`);
+            setTimeout(() => window.location.reload(), 1200);
+        } else {
+            setProgressState('error');
+            progressStatus.textContent = `${failedFiles.length} photo(s) failed.`;
+            errorsBox.style.display = 'block';
+            errorsBox.innerHTML =
+                '<strong>Failed uploads:</strong><ul class="mb-0 mt-1">' +
+                failedFiles.map(f => `<li>${f.file.name} — ${f.reason}</li>`).join('') +
+                '</ul>';
+            retryBtn.style.display = 'inline-block';
+        }
+    }
+
+    uploadBtn.addEventListener('click', () => {
+        const files = Array.from(fileInput.files || []);
+        if (files.length === 0) {
+            alert('Please select at least one photo first.');
+            return;
+        }
+        runUpload(files);
+    });
+
+    retryBtn.addEventListener('click', () => {
+        if (failedFiles.length === 0) return;
+        const retryFiles = failedFiles.map(f => f.file);
+        runUpload(retryFiles);
+    });
+})();
 </script>
 {% endblock %}

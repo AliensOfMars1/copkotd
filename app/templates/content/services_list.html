@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Service Times — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h2 class="mb-0">Service Times</h2>
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('content.create_service') }}" class="btn btn-primary btn-sm">+ Add Service</a>
+    <a href="{{ url_for('content.dashboard') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle bg-white">
+    <thead class="table-light">
+      <tr>
+        <th>Service Name</th>
+        <th>Day</th>
+        <th>Time</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in services %}
+      <tr>
+        <td>{{ s.service_name }}</td>
+        <td>{{ s.day_of_week }}</td>
+        <td>
+          {{ s.start_time }}
+          {% if s.end_time %} - {{ s.end_time }}{% endif %}
+        </td>
+        <td class="text-end">
+          <a href="{{ url_for('content.edit_service', id=s.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+          <form method="post" action="{{ url_for('content.delete_service', id=s.id) }}" class="d-inline" onsubmit="return confirm('Remove this service time?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="text-center text-muted py-4">No service times added yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

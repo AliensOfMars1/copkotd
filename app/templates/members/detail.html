@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}{{ member.full_name }} — KOTD{% endblock %}
+
+{% block content %}
+{# Avatar helper — initials if no photo #}
+{% set initials = (member.first_name[0] if member.first_name else '') ~ (member.last_name[0] if member.last_name else '') %}
+{% set initials = initials|upper or '?' %}
+<div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
+  <div class="d-flex align-items-center gap-3">
+    {% if member.photo_url %}
+      <img src="{{ member.photo_url }}"
+           alt="{{ member.full_name }}"
+           class="rounded-circle object-fit-cover"
+           id="member-photo-thumb"
+           style="width: 72px; height: 72px; cursor: pointer;"
+           title="Click to enlarge">
+    {% else %}
+      <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold"
+           style="width: 72px; height: 72px; font-size: 1.5rem;">
+        {{ initials }}
+      </div>
+    {% endif %}
+    <div>
+      <h2 class="mb-0">{{ member.full_name }}</h2>
+      <span class="text-muted small">
+        {{ member.member_type or 'Member' }}
+        {% if member.membership_status %}
+          · {{ member.membership_status|capitalize }}
+        {% endif %}
+      </span>
+    </div>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('members.list_members') }}">Back</a>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('members.edit_member', member_id=member.id) }}">Edit</a>
+    <form method="post" action="{{ url_for('members.delete_member', member_id=member.id) }}"
+          onsubmit="return confirm('Delete this member permanently?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Personal</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Gender</dt><dd class="col-7">{{ member.gender or "—" }}</dd>
+          <dt class="col-5">Date of Birth</dt><dd class="col-7">{{ member.date_of_birth or "—" }}</dd>
+          <dt class="col-5">Age</dt><dd class="col-7">{{ member.age or "—" }}</dd>
+          <dt class="col-5">Phone</dt><dd class="col-7">{{ member.phone or "—" }}</dd>
+          <dt class="col-5">Email</dt><dd class="col-7">{{ member.email or "—" }}</dd>
+          <dt class="col-5">Marital Status</dt><dd class="col-7">{{ member.marital_status or "—" }}</dd>
+          <dt class="col-5">Family Group</dt>
+          <dd class="col-7">
+            {% if member.family %}
+              <a href="{{ url_for('families.view_family', family_id=member.family.id) }}">
+                {{ member.family.name }}
+              </a>
+            {% else %}
+              —
+            {% endif %}
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Spiritual</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Member Type</dt><dd class="col-7">{{ member.member_type or "—" }}</dd>
+          <dt class="col-5">Water Baptism</dt><dd class="col-7">{{ "Yes" if member.water_baptism else "No" }}</dd>
+          <dt class="col-5">Date of Baptism</dt><dd class="col-7">{{ member.date_of_baptism or "—" }}</dd>
+          <dt class="col-5">Holy Ghost Baptism</dt><dd class="col-7">{{ "Yes" if member.holyghost_baptism else "No" }}</dd>
+          <dt class="col-5">Communicant</dt><dd class="col-7">{{ "Yes" if member.communicant else "No" }}</dd>
+          <dt class="col-5">Status</dt><dd class="col-7">{{ member.membership_status|capitalize }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Address</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Address</dt><dd class="col-7">{{ member.address_line1 or "—" }}</dd>
+          <dt class="col-5">GPS</dt><dd class="col-7">{{ member.gps_address or "—" }}</dd>
+          <dt class="col-5">City</dt><dd class="col-7">{{ member.city or "—" }}</dd>
+          <dt class="col-5">Hometown</dt><dd class="col-7">{{ member.hometown or "—" }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Education &amp; Work</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-5">Occupation</dt><dd class="col-7">{{ member.occupation or "—" }}</dd>
+          <dt class="col-5">Education</dt><dd class="col-7">{{ member.level_of_education or "—" }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ── Photo Lightbox Overlay ── #}
+{% if member.photo_url %}
+<div id="photo-lightbox"
+     style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            z-index: 9999; align-items: center; justify-content: center; cursor: pointer;">
+  <img src="{{ member.photo_url }}"
+       alt="{{ member.full_name }}"
+       class="rounded-circle object-fit-cover"
+       style="max-width: 90vw; max-height: 90vh; width: 400px; height: 400px;
+              box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    const thumb = document.getElementById('member-photo-thumb');
+    const lightbox = document.getElementById('photo-lightbox');
+    if (!thumb || !lightbox) return;
+
+    // Open on thumbnail click
+    thumb.addEventListener('click', function (e) {
+      e.stopPropagation();
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Close on overlay click (anywhere, including the image)
+    lightbox.addEventListener('click', function () {
+      lightbox.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  })();
+</script>
+{% endblock %}

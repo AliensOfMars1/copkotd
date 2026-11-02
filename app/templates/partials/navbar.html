@@ -1,0 +1,11 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">KOTD English Assembly</a>
+    <div class="ms-auto d-flex align-items-center text-white">
+      <span class="me-3 small">
+        {{ current_user.full_name }} — {{ current_user.role_label }}
+      </span>
+      <a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+  </div>
+</nav>

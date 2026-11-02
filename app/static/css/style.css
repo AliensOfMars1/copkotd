@@ -1909,3 +1909,266 @@ ul {
         letter-spacing: 1px;
     }
 }
+
+/* ── Layout basics ───────────────────────────────────────── */
+body {
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+/* ── Mobile topbar ───────────────────────────────────────── */
+.mobile-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: #1c1f23;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+}
+
+/* ── Sidebar (desktop) ───────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background: #1c1f23;
+  color: #cfd3d6;
+  padding: 1rem 0 0;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1040;
+}
+
+.sidebar-nav {
+  padding: 0 0.5rem;
+}
+
+.sidebar .nav-link {
+  color: #cfd3d6;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.4rem;
+  margin: 0.15rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+}
+
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}
+
+/* ── Sidebar user panel ──────────────────────────────────── */
+.sidebar-user {
+  margin-top: auto;
+  padding: 1rem 1rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* ── Main content area ───────────────────────────────────── */
+.main-content {
+  padding: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 240px;      /* clear the fixed sidebar */
+    padding: 2rem;
+  }
+}
+
+/* ── Offcanvas sidebar (mobile) ──────────────────────────── */
+.offcanvas.text-bg-dark .sidebar-nav {
+  padding: 0 0.5rem;
+}
+
+.offcanvas.text-bg-dark .nav-link {
+  color: #cfd3d6;
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.offcanvas.text-bg-dark .nav-link:hover {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+}
+
+.offcanvas.text-bg-dark .nav-link i {
+  width: 22px;
+  text-align: center;
+}
+
+/* ── Staff login links ─────────────────────────────────── */
+.footer-bottom-links .staff-login {
+    opacity: 0.85;
+    font-size: 0.9em;
+    color: #c9a227;
+    font-weight: 600;
+}
+.footer-bottom-links .staff-login:hover {
+    opacity: 1;
+    color: #e6c34a;
+}
+
+/* Sidebar Staff Login (About section) */
+.mobile-menu-list a[href*="/auth/login"] {
+    color: #c9a227;
+    font-weight: 600;
+}
+
+/* Bottom legal section Staff Login */
+.mobile-menu-legal .staff-login-mobile {
+    color: #c9a227;
+    font-weight: 600;
+}
+.mobile-menu-legal .staff-login-mobile:hover {
+    color: #e6c34a;
+}
+
+/* Make textareas look cleaner */
+textarea.form-control {
+    resize: none; /* Removes the manual drag handle */
+    overflow-y: hidden; /* Prevents the scrollbar from flashing */
+    min-height: 100px; /* Ensures it starts with a nice size */
+}
+
+/* ── Prevent button text truncation ─────────────────── */
+.btn { white-space: nowrap; }
+
+/* ── Responsive headers: stack on mobile ─────────────── */
+@media (max-width: 767.98px) {
+  .d-flex.justify-content-between {
+    flex-wrap: wrap;
+  }
+  h2 { font-size: 1.4rem; }
+  .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.85rem; }
+}
+
+/* ── Responsive admin cards ──────────────────────────── */
+@media (max-width: 767.98px) {
+  .main-content {
+    padding: 1rem;
+  }
+  .card-body {
+    padding: 1rem;
+  }
+  .fs-3 { font-size: 1.5rem !important; }
+}
+
+/* ── Fix nav overflow at tablet width (1024px and below) ── */
+@media (max-width: 1100px) and (min-width: 769px) {
+  .nav-menu {
+    gap: 1rem;
+  }
+  .nav-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+  .cta-nav {
+    padding: 8px 14px !important;
+    font-size: 0.75rem;
+  }
+  .nav-container {
+    padding: 0 12px;
+  }
+  .logo-text {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+}
+
+/* Small laptop / narrow desktop */
+@media (max-width: 900px) and (min-width: 769px) {
+  .nav-menu {
+    gap: 0.6rem;
+  }
+  .nav-link {
+    font-size: 0.7rem;
+  }
+  .logo-text {
+    font-size: 0.72rem;
+  }
+}
+
+
+/* ── Sermon thumbnail with play overlay ──────────────── */
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.video-thumbnail:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+}
+
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+}
+
+.thumbnail-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(196, 163, 90, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    font-size: 2rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: transform var(--transition-normal), background var(--transition-normal);
+    padding-left: 6px; /* Optically center the play triangle */
+}
+
+.video-thumbnail:hover .thumbnail-play-button {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: #c4a35a;
+}
+
+/* Mobile size adjustment */
+@media (max-width: 768px) {
+    .thumbnail-play-button {
+        width: 64px;
+        height: 64px;
+        font-size: 1.4rem;
+    }
+}

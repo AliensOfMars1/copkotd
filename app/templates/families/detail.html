@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}{{ family.name }} — KOTD{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
+  <div>
+    <h2 class="mb-0">{{ family.name }}</h2>
+    {% if family.description %}<p class="text-muted small mb-0">{{ family.description }}</p>{% endif %}
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('families.list_families') }}">Back</a>
+    {% if current_user.role in ['super_admin', 'admin'] %}
+    <a class="btn btn-outline-primary btn-sm"
+       href="{{ url_for('families.edit_family', family_id=family.id) }}">Edit</a>
+    {% endif %}
+  </div>
+</div>
+
+<p class="text-muted">{{ members|length }} member(s) in this family.</p>
+
+{# ── DESKTOP TABLE (≥ md) ──────────────────────────────── #}
+<div class="table-responsive d-none d-md-block">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th style="min-width: 220px;">Name</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in members %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            {% if m.photo_url %}
+              <img src="{{ m.photo_url }}"
+                   alt=""
+                   class="rounded-circle object-fit-cover flex-shrink-0"
+                   style="width: 32px; height: 32px;">
+            {% else %}
+              {% set initials = ((m.first_name[0] if m.first_name else '') ~ (m.last_name[0] if m.last_name else ''))|upper or '?' %}
+              <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                   style="width: 32px; height: 32px; font-size: 0.75rem;">
+                {{ initials }}
+              </div>
+            {% endif %}
+            <a href="{{ url_for('members.view_member', member_id=m.id) }}" class="text-truncate">
+              {{ m.full_name }}
+            </a>
+          </div>
+        </td>
+        <td>{{ m.gender or "—" }}</td>
+        <td>{{ m.phone or "—" }}</td>
+        <td>
+          <span class="badge bg-{{ 'success' if m.membership_status == 'active' else 'secondary' }}">
+            {{ m.membership_status|capitalize }}
+          </span>
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('members.view_member', member_id=m.id) }}">View</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No members in this family yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{# ── MOBILE CARD LIST (< md) ───────────────────────────── #}
+<div class="d-md-none">
+  {% for m in members %}
+  <a href="{{ url_for('members.view_member', member_id=m.id) }}"
+     class="d-block text-decoration-none text-dark mb-2">
+    <div class="card shadow-sm border-0">
+      <div class="card-body py-2 px-3 d-flex align-items-center gap-3">
+        {% if m.photo_url %}
+          <img src="{{ m.photo_url }}"
+               alt=""
+               class="rounded-circle object-fit-cover flex-shrink-0"
+               style="width: 44px; height: 44px;">
+        {% else %}
+          {% set initials = ((m.first_name[0] if m.first_name else '') ~ (m.last_name[0] if m.last_name else ''))|upper or '?' %}
+          <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
+               style="width: 44px; height: 44px; font-size: 0.9rem;">
+            {{ initials }}
+          </div>
+        {% endif %}
+        <div class="flex-grow-1 min-width-0">
+          <div class="fw-semibold text-truncate">{{ m.full_name }}</div>
+          <div class="text-muted small text-truncate">
+            {{ m.gender or "—" }}
+            {% if m.phone %} · {{ m.phone }}{% endif %}
+          </div>
+        </div>
+        <span class="badge bg-{{ 'success' if m.membership_status == 'active' else 'secondary' }}">
+          {{ m.membership_status|capitalize }}
+        </span>
+      </div>
+    </div>
+  </a>
+  {% else %}
+  <div class="text-center text-muted py-4">No members in this family yet.</div>
+  {% endfor %}
+</div>
+{% endblock %}

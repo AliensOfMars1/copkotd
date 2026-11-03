@@ -1,12 +1,27 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <div class="container mt-3">
+    <div class="flash-stack">
       {% for category, msg in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ msg }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="flash flash-{{ category }}" role="alert">
+          <span>{{ msg }}</span>
+          <button type="button" class="flash-close" aria-label="Dismiss">✕</button>
         </div>
       {% endfor %}
     </div>
   {% endif %}
 {% endwith %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.flash').forEach(function (flash) {
+    const closeBtn = flash.querySelector('.flash-close');
+    const remove = () => {
+      flash.style.opacity = '0';
+      flash.style.transform = 'translateY(-8px)';
+      setTimeout(() => flash.remove(), 250);
+    };
+    if (closeBtn) closeBtn.addEventListener('click', remove);
+    setTimeout(remove, 5000);
+  });
+});
+</script>

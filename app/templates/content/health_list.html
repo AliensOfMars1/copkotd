@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_dashboard.html" %}
 {% block title %}Health Articles — KOTD{% endblock %}
 
 {% block content %}
@@ -9,6 +9,9 @@
   </a>
 </div>
 
+{# ══════════════════════════════════════════════════════════ #}
+{#  DESKTOP TABLE (≥ md) — hidden on mobile                  #}
+{# ══════════════════════════════════════════════════════════ #}
 <div class="table-responsive d-none d-md-block">
   <table class="table table-hover align-middle bg-white">
     <thead class="table-light">
@@ -35,9 +38,16 @@
           </div>
           {% endif %}
         </td>
-        <td>
-          <div class="fw-semibold">{{ a.title }}</div>
-          <div class="text-muted small">{{ a.summary[:80] }}{% if a.summary|length > 80 %}...{% endif %}</div>
+        <td style="max-width: 280px;">
+          <div class="fw-semibold"
+               style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px;"
+               title="{{ a.title }}">
+            {{ a.title }}
+          </div>
+          <div class="text-muted small"
+               style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px;">
+            {{ a.summary[:80] }}{% if a.summary|length > 80 %}...{% endif %}
+          </div>
         </td>
         <td>{{ a.category or '—' }}</td>
         <td>
@@ -64,11 +74,16 @@
   </table>
 </div>
 
+{# ══════════════════════════════════════════════════════════ #}
+{#  MOBILE CARD VIEW (< md) — the fix lives here              #}
+{# ══════════════════════════════════════════════════════════ #}
 <div class="d-md-none">
   {% for a in articles %}
-  <div class="card shadow-sm border-0 mb-2">
+  <div class="card shadow-sm border-0 mb-2" style="overflow: hidden;">
     <div class="card-body py-2 px-3">
-      <div class="d-flex gap-2 align-items-center mb-2">
+      <div class="d-flex gap-2 align-items-center mb-2" style="min-width: 0;">
+
+        {# Cover image — fixed size, never shrinks #}
         {% if a.cover_image_url %}
           <img src="{{ a.cover_image_url }}" alt=""
                class="rounded object-fit-cover flex-shrink-0"
@@ -79,16 +94,27 @@
             <i class="bi bi-image"></i>
           </div>
         {% endif %}
-        <div class="flex-grow-1 min-width-0">
-          <div class="fw-semibold text-truncate">{{ a.title }}</div>
-          <div class="text-muted small">
+
+        {# Text column — the critical fix: min-width:0 + overflow:hidden #}
+        <div style="flex: 1 1 0; min-width: 0; overflow: hidden;">
+          <div class="fw-semibold"
+               style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;"
+               title="{{ a.title }}">
+            {{ a.title }}
+          </div>
+          <div class="text-muted small"
+               style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
             {{ a.category or '—' }} · {{ a.created_at.strftime('%b %d, %Y') }}
           </div>
         </div>
+
+        {# Status badge — fixed, never shrinks #}
         <span class="badge bg-{{ 'success' if a.is_published else 'secondary' }} flex-shrink-0">
           {{ "Published" if a.is_published else "Draft" }}
         </span>
       </div>
+
+      {# Action buttons — full width on mobile #}
       <div class="d-flex gap-2">
         <a href="{{ url_for('health_admin.edit_article', article_id=a.id) }}"
            class="btn btn-sm btn-outline-secondary flex-grow-1">Edit</a>

@@ -1,5 +1,5 @@
 /* ============================================ */
-/* EVENT CARDS & ANNOUNCEMENTS (HOMEPAGE)       */
+/* EVENT CARDS (HOMEPAGE)                       */
 /* ============================================ */
 
 /* ===== Event Card ===== */
@@ -79,21 +79,6 @@
 }
 .event-actions { display: flex; gap: 1rem; align-items: center; }
 
-/* ===== Announcement gold border ===== */
-.announcement-card {
-    border: 1px solid #c4a35a;
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    background: #fff;
-    margin-bottom: 1rem;
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-.announcement-card:hover {
-    box-shadow: 0 6px 18px rgba(196, 163, 90, 0.18);
-    transform: translateY(-1px);
-}
-.announcement-card h4 { color: #1a1a1a; margin-bottom: 0.5rem; }
-
 /* ===== Event counter + hidden events ===== */
 .event-count {
     display: inline-block;
@@ -112,13 +97,12 @@
 /* MOBILE SPECIFIC OVERRIDES                    */
 /* ============================================ */
 @media (max-width: 768px) {
-    /* 1. Navbar brand left aligned */
     .nav-brand {
         justify-content: flex-start;
         text-align: left;
         flex: 1;
         min-width: 0;
-        margin-left: 0.75rem; /* Space from hamburger */
+        margin-left: 0.75rem;
     }
     .nav-brand .logo-text {
         text-align: left;
@@ -143,7 +127,6 @@
     .event-date .event-month { font-size: 0.7rem; }
     .event-date .event-day { font-size: 0.95rem; }
 
-    /* 4. Mobile order: header -> image -> body */
     .event-card-content-wrapper {
         display: grid;
         grid-template-columns: 1fr;

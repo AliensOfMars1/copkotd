@@ -1,0 +1,67 @@
+{# ── Dashboard ── #}
+<li>
+  <a href="{{ url_for('dashboard.' + current_user.role) }}"
+     class="{% if request.endpoint and request.endpoint.startswith('dashboard.') %}active{% endif %}">
+    <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
+  </a>
+</li>
+
+{# ── Members ── #}
+{% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
+<li>
+  <a href="{{ url_for('members.list_members') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('members.') %}active{% endif %}">
+    <i class="bi bi-people"></i> <span>Members</span>
+  </a>
+</li>
+{% endif %}
+
+{# ── Families ── #}
+{% if current_user.role in ['super_admin', 'admin', 'records_officer'] %}
+<li>
+  <a href="{{ url_for('families.list_families') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('families.') %}active{% endif %}">
+    <i class="bi bi-house-heart"></i> <span>Families</span>
+  </a>
+</li>
+{% endif %}
+
+{# ── Ministries ── #}
+{% if current_user.role in ['super_admin', 'admin'] %}
+<li>
+  <a href="{{ url_for('ministries.list_ministries') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('ministries.') %}active{% endif %}">
+    <i class="bi bi-diagram-3"></i> <span>Ministries</span>
+  </a>
+</li>
+{% endif %}
+
+{# ── Content Manager ── #}
+{% if current_user.role in ['super_admin', 'admin', 'communications_officer'] %}
+<li>
+  <a href="{{ url_for('content.dashboard') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('content.') %}active{% endif %}">
+    <i class="bi bi-globe"></i> <span>Homepage Content</span>
+  </a>
+</li>
+{% endif %}
+
+{# ── Health Articles ── #}
+{% if current_user.role in ['super_admin', 'health_officer'] %}
+<li>
+  <a href="{{ url_for('health_admin.list_articles') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('health_admin.') %}active{% endif %}">
+    <i class="bi bi-heart-pulse"></i> <span>Health Articles</span>
+  </a>
+</li>
+{% endif %}
+
+{# ── Users ── #}
+{% if current_user.role == 'super_admin' %}
+<li>
+  <a href="{{ url_for('users.list_users') }}"
+     class="{% if request.endpoint and request.endpoint.startswith('users.') %}active{% endif %}">
+    <i class="bi bi-person-badge"></i> <span>Admins</span>
+  </a>
+</li>
+{% endif %}

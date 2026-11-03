@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_dashboard.html" %}
 {% block title %}Users — KOTD{% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
      href="{{ url_for('users.list_users', show='all') }}">All</a>
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive" id="users-table-wrap">
   <table class="table table-hover align-middle">
     <thead class="table-light">
       <tr>
@@ -27,41 +27,82 @@
         <th>Role</th>
         <th>Ministry</th>
         <th>Status</th>
-        <th></th>
+        <th style="width: 1%; white-space: nowrap;" class="text-end">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for u in users %}
       <tr>
-        <td>{{ u.full_name }}</td>
-        <td>{{ u.email }}</td>
+        <td>
+          <div title="{{ u.full_name }}"
+               style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {{ u.full_name }}
+          </div>
+        </td>
+        <td>
+          <div title="{{ u.email }}"
+               style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {{ u.email }}
+          </div>
+        </td>
         <td>{{ u.role_label }}</td>
-        <td>{{ u.ministry.name if u.ministry else "—" }}</td>
+        <td>
+          <div style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {{ u.ministry.name if u.ministry else "—" }}
+          </div>
+        </td>
         <td>
           <span class="badge bg-{{ 'success' if u.is_active else 'secondary' }}">
             {{ "Active" if u.is_active else "Inactive" }}
           </span>
         </td>
         <td class="text-end">
-          <a class="btn btn-sm btn-outline-secondary"
-             href="{{ url_for('users.edit_user', user_id=u.id) }}">Edit</a>
-          <form method="post" action="{{ url_for('users.reset_password', user_id=u.id) }}"
-                class="d-inline"
-                onsubmit="return confirm('Generate a new temporary password for {{ u.full_name }}?');">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button class="btn btn-sm btn-outline-warning" type="submit">Reset Pwd</button>
-          </form>
-          {% if u.id != current_user.id %}
-          <form method="post" action="{{ url_for('users.toggle_user', user_id=u.id) }}"
-                class="d-inline"
-                onsubmit="return confirm('Change active status for {{ u.full_name }}?');">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button class="btn btn-sm btn-outline-{{ 'danger' if u.is_active else 'success' }}"
-                    type="submit">
-              {{ "Deactivate" if u.is_active else "Activate" }}
+          <div class="dropdown">
+            <button class="btn btn-sm btn-light border kebab-btn"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    data-bs-strategy="fixed"
+                    aria-expanded="false"
+                    aria-label="Actions for {{ u.full_name }}">
+              <i class="bi bi-three-dots-vertical"></i>
             </button>
-          </form>
-          {% endif %}
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+              <li>
+                <a class="dropdown-item" href="{{ url_for('users.edit_user', user_id=u.id) }}">
+                  <i class="bi bi-pencil-square me-2 text-secondary"></i> Edit
+                </a>
+              </li>
+
+              <li>
+                <form method="post" action="{{ url_for('users.reset_password', user_id=u.id) }}"
+                      class="m-0"
+                      onsubmit="return confirm('Generate a new temporary password for {{ u.full_name }}?');">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="dropdown-item">
+                    <i class="bi bi-key me-2 text-warning"></i> Reset Password
+                  </button>
+                </form>
+              </li>
+
+              {% if u.id != current_user.id %}
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form method="post" action="{{ url_for('users.toggle_user', user_id=u.id) }}"
+                      class="m-0"
+                      onsubmit="return confirm('Change active status for {{ u.full_name }}?');">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit"
+                          class="dropdown-item {% if u.is_active %}text-danger{% else %}text-success{% endif %}">
+                    <i class="bi bi-{{ 'pause-circle' if u.is_active else 'play-circle' }} me-2"></i>
+                    {{ "Deactivate" if u.is_active else "Activate" }}
+                  </button>
+                </form>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
         </td>
       </tr>
       {% else %}
@@ -70,4 +111,21 @@
     </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    const wrap = document.getElementById('users-table-wrap');
+    if (!wrap) return;
+
+    wrap.addEventListener('show.bs.dropdown', function () {
+        wrap.style.overflow = 'visible';
+    });
+
+    wrap.addEventListener('hide.bs.dropdown', function () {
+        wrap.style.overflow = '';
+    });
+})();
+</script>
 {% endblock %}

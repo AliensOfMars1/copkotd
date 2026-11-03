@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template
 from flask_login import login_required
 from app.auth.decorators import role_required
@@ -28,12 +30,13 @@ def super_admin():
     upcoming_bdays = get_upcoming_birthdays(days_ahead=7)
     
     return render_template(
-        "dashboard/super_admin.html", 
-        stats=stats, 
+        "dashboard/super_admin.html",
+        stats=stats,
         recent=recent,
         todays_birthdays=todays_bdays,
         upcoming_birthdays=upcoming_bdays,
         days_until=days_until_birthday,
+        now=datetime.utcnow(),
     )
 
 
@@ -107,4 +110,5 @@ def health_officer():
         "dashboard/health_officer.html",
         articles=articles,
         stats=stats,
+        now=datetime.utcnow(),
     )

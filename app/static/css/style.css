@@ -2325,3 +2325,42 @@ textarea.form-control {
         font-size: 0.9rem;
     }
 }
+/* ============================================ */
+/* DESKTOP NAV — FIT WITHOUT OVERFLOW           */
+/* ============================================ */
+@media (min-width: 992px) {
+
+  /* Tighten gaps so nothing overflows */
+  .nav-menu {
+    gap: 1.25rem;
+    flex-shrink: 1;         /* allow menu to shrink if needed */
+  }
+
+  .nav-link {
+    font-size: 0.82rem;     /* slightly smaller text */
+    letter-spacing: 0.5px;  /* less letter spacing */
+    white-space: nowrap;
+  }
+
+  .cta-nav {
+    padding: 8px 16px !important;
+    font-size: 0.8rem;
+  }
+
+  /* Reduce outer padding so everything fits within the viewport */
+  .navbar .nav-container {
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  /* Let the brand shrink less aggressively — nav menu takes priority for space */
+  .nav-brand {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .nav-brand .logo-text {
+    font-size: 0.9rem;      /* slightly smaller church name */
+    letter-spacing: 1px;
+  }
+}

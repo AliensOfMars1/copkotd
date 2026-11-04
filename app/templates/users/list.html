@@ -1,11 +1,11 @@
 {% extends "base_dashboard.html" %}
-{% block title %}Users — KOTD{% endblock %}
+{% block title %}Admins {% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <h2 class="mb-0">Staff Users</h2>
   <a class="btn btn-primary btn-sm" href="{{ url_for('users.create_user') }}">
-    <i class="bi bi-person-plus"></i> New User
+    <i class="bi bi-person-plus"></i> New Admin
   </a>
 </div>
 
@@ -106,7 +106,7 @@
         </td>
       </tr>
       {% else %}
-      <tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>
+      <tr><td colspan="6" class="text-center text-muted py-4">No admins found.</td></tr>
       {% endfor %}
     </tbody>
   </table>

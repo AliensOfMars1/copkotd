@@ -1,8 +1,8 @@
 {% extends "base_dashboard.html" %}
-{% block title %}{{ "Edit" if user else "New" }} User — KOTD{% endblock %}
+{% block title %}{{ "Edit" if user else "New" }} Admin {% endblock %}
 
 {% block content %}
-<h2 class="mb-3">{{ "Edit" if user else "New" }} User</h2>
+<h2 class="mb-3">{{ "Edit" if user else "New" }} Admin</h2>
 
 {% macro render_field(field, cols=6) %}
   <div class="col-md-{{ cols }}">

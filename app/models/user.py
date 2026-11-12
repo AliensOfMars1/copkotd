@@ -21,6 +21,21 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # ── NEW: link to Member record ──────────────────────────
+    member_id = db.Column(
+        db.Integer,
+        db.ForeignKey("members.id", ondelete="SET NULL"),
+        nullable=True,
+        unique=True,   # one user per member
+    )
+
+    member = db.relationship(
+        "Member",
+        backref=db.backref("user_account", uselist=False),
+        foreign_keys=[member_id],
+        uselist=False,
+    )
+
     def set_password(self, raw):
         self.password_hash = bcrypt.generate_password_hash(raw).decode("utf-8")
 

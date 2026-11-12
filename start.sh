@@ -10,5 +10,8 @@ python seed_admin.py
 echo "[start.sh] Seeding families and ministries..."
 python seed_reference_data.py
 
+echo "[start.sh] Linking existing users to member records (idempotent)..."
+LINK_NONINTERACTIVE=1 python link_existing_users.py
+
 echo "[start.sh] Starting gunicorn..."
 exec gunicorn --bind 0.0.0.0:$PORT run:app

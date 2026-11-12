@@ -2,7 +2,10 @@
 {% block title %}{{ "Edit" if user else "New" }} Admin {% endblock %}
 
 {% block content %}
-<h2 class="mb-3">{{ "Edit" if user else "New" }} Admin</h2>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h2 class="mb-0">{{ "Edit" if user else "New" }} Admin</h2>
+  <a href="{{ url_for('users.list_users') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+</div>
 
 {% macro render_field(field, cols=6) %}
   <div class="col-md-{{ cols }}">
@@ -12,6 +15,17 @@
         {{ field.label(class="form-check-label") }}
         {% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
       </div>
+    {% elif field.type == 'RadioField' %}
+      <label class="form-label">{{ field.label.text }}</label>
+      <div class="d-flex gap-3 flex-wrap">
+        {% for subfield in field %}
+          <div class="form-check">
+            {{ subfield(class="form-check-input") }}
+            {{ subfield.label(class="form-check-label") }}
+          </div>
+        {% endfor %}
+      </div>
+      {% for e in field.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
     {% else %}
       {{ field.label(class="form-label") }}
       {{ field(class="form-control" + (" is-invalid" if field.errors else "")) }}
@@ -23,12 +37,59 @@
 <form method="post" novalidate>
   {{ form.hidden_tag() }}
 
+  {# ── Step 1: member identity (create only) ────────────── #}
+  {% if not user %}
   <div class="card mb-3">
+    <div class="card-header bg-white"><strong>Step 1 — Who is this person?</strong></div>
     <div class="card-body row g-3">
-      {{ render_field(form.first_name, 6) }}
-      {{ render_field(form.last_name, 6) }}
+      {{ render_field(form.member_mode, 12) }}
+
+      <div id="existing-member-section" class="col-12 row g-3">
+        {{ render_field(form.existing_member_id, 12) }}
+      </div>
+
+      <div id="new-member-section" class="col-12 row g-3" style="display: none;">
+        <div class="col-12">
+          <hr>
+          <small class="text-muted">
+            Fill in the new member's details. They'll be added to the church records
+            and linked to this account.
+          </small>
+        </div>
+        {{ render_field(form.member_first_name, 6) }}
+        {{ render_field(form.member_last_name, 6) }}
+        {{ render_field(form.member_gender, 4) }}
+        {{ render_field(form.member_date_of_birth, 4) }}
+        {{ render_field(form.member_phone, 4) }}
+        {{ render_field(form.member_family_id, 12) }}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {# ── Step 2: staff account ─────────────────────────────── #}
+  <div class="card mb-3">
+    <div class="card-header bg-white">
+      <strong>{{ "Account details" if user else "Step 2 — Staff account" }}</strong>
+    </div>
+    <div class="card-body row g-3">
+      {% if user %}
+        {# read-only display of the linked member name #}
+        <div class="col-12">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" disabled
+                 value="{{ (user.member.full_name if user.member else user.full_name) }}">
+          {% if not user.member %}
+          <div class="form-text text-warning">
+            ⚠ This user is not linked to a Member record. Run the linking script to fix.
+          </div>
+          {% endif %}
+        </div>
+      {% endif %}
       {{ render_field(form.email, 6) }}
-      {{ render_field(form.phone, 6) }}
+      {% if user %}
+        {{ render_field(form.phone, 6) }}
+      {% endif %}
       {{ render_field(form.role, 6) }}
       {{ render_field(form.ministry_id, 6) }}
       {{ render_field(form.is_active, 12) }}
@@ -40,4 +101,28 @@
     <a class="btn btn-outline-secondary" href="{{ url_for('users.list_users') }}">Cancel</a>
   </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const modeRadios = document.querySelectorAll('input[name="member_mode"]');
+  const existingSection = document.getElementById('existing-member-section');
+  const newSection = document.getElementById('new-member-section');
+  if (!modeRadios.length || !existingSection || !newSection) return;
+
+  function toggle() {
+    const selected = document.querySelector('input[name="member_mode"]:checked')?.value;
+    if (selected === 'existing') {
+      existingSection.style.display = '';
+      newSection.style.display = 'none';
+    } else {
+      existingSection.style.display = 'none';
+      newSection.style.display = '';
+    }
+  }
+  modeRadios.forEach(r => r.addEventListener('change', toggle));
+  toggle();
+})();
+</script>
 {% endblock %}

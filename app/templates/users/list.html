@@ -26,6 +26,7 @@
         <th>Email</th>
         <th>Role</th>
         <th>Ministry</th>
+        <th>Member</th>
         <th>Status</th>
         <th style="width: 1%; white-space: nowrap;" class="text-end">Actions</th>
       </tr>
@@ -50,6 +51,19 @@
           <div style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
             {{ u.ministry.name if u.ministry else "—" }}
           </div>
+        </td>
+        <td>
+          {% if u.member %}
+            <a href="{{ url_for('members.view_member', member_id=u.member.id) }}"
+               class="badge bg-success text-decoration-none"
+               title="View linked member record">
+              ✓ Linked
+            </a>
+          {% else %}
+            <span class="badge bg-warning text-dark" title="Not linked to a Member record">
+              ⚠ Not linked
+            </span>
+          {% endif %}
         </td>
         <td>
           <span class="badge bg-{{ 'success' if u.is_active else 'secondary' }}">
@@ -106,7 +120,7 @@
         </td>
       </tr>
       {% else %}
-      <tr><td colspan="6" class="text-center text-muted py-4">No admins found.</td></tr>
+      <tr><td colspan="7" class="text-center text-muted py-4">No admins found.</td></tr>
       {% endfor %}
     </tbody>
   </table>

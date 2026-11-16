@@ -1,0 +1,28 @@
+{# ── Logged-in user identity card ──────────────────────── #}
+{# Requires: current_user with optional .member.photo_url #}
+<div class="dash-user-card">
+  <div class="dash-user-avatar">
+    {% if current_user.member and current_user.member.photo_url %}
+      <img src="{{ current_user.member.photo_url }}" alt="{{ current_user.full_name }}">
+    {% else %}
+      {% set initials = ((current_user.first_name[0] if current_user.first_name else '') ~ (current_user.last_name[0] if current_user.last_name else ''))|upper or '?' %}
+      <span class="dash-user-avatar-fallback">{{ initials }}</span>
+    {% endif %}
+  </div>
+
+  <div class="dash-user-meta">
+    <div class="dash-user-name">{{ current_user.full_name }}</div>
+    <div class="dash-user-role-badge">
+      <i class="bi {{ current_user.role_icon if current_user.role_icon else 'bi-person-badge-fill' }}"></i>
+      {{ current_user.role_label }}
+    </div>
+  </div>
+
+  <div class="dash-user-extra">
+    {% if current_user.last_login %}
+      <div class="dash-user-last-login">
+        Last login: {{ current_user.last_login.strftime('%b %d, %H:%M') }}
+      </div>
+    {% endif %}
+  </div>
+</div>

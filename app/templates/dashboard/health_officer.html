@@ -1,7 +1,10 @@
-﻿{% extends "base_dashboard.html" %}
+﻿
+{% extends "base_dashboard.html" %}
 {% block title %}Health Officer Dashboard - The Church Of Pentecost Kwabenya Old Town English Assembly{% endblock %}
 
 {% block content %}
+{% include "partials/dash_user_card.html" %}
+
 <div class="dash-header mb-4">
   <div class="dash-greeting">
     <h1 class="dash-title">Good {{ 'morning' if now.hour < 12 else ('afternoon' if now.hour < 17 else 'evening') }}, {{ current_user.first_name }}</h1>
@@ -37,7 +40,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-lg-4">
+  <div class="col-6 col-lg-4">
     <div class="stat-card stat-card-warning">
       <div class="stat-icon"><i class="bi bi-pencil-fill"></i></div>
       <div class="stat-body">

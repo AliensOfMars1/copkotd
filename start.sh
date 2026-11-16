@@ -13,5 +13,8 @@ python seed_reference_data.py
 echo "[start.sh] Linking existing users to member records (idempotent)..."
 LINK_NONINTERACTIVE=1 python link_existing_users.py
 
+echo "[start.sh] Migrating health article Markdown → HTML (idempotent)..."
+python migrate_health_markdown_to_html.py
+
 echo "[start.sh] Starting gunicorn..."
 exec gunicorn --bind 0.0.0.0:$PORT run:app

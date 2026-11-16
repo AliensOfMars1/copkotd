@@ -50,6 +50,23 @@ class User(UserMixin, db.Model):
     def role_label(self):
         return Role.LABELS.get(self.role, self.role)
 
+    @property
+    def role_icon(self):
+        """Bootstrap Icon class per role — used in dashboard user cards."""
+        _ICONS = {
+            Role.SUPER_ADMIN: "bi-shield-lock-fill",
+            Role.ADMIN: "bi-person-gear",
+            Role.FINANCIAL_OFFICER: "bi-cash-coin",
+            Role.RECORDS_OFFICER: "bi-folder-symlink-fill",
+            Role.COMPLIANCE_OFFICER: "bi-clipboard-check-fill",
+            Role.DATA_OFFICER: "bi-bar-chart-fill",
+            Role.COMMUNICATIONS_OFFICER: "bi-megaphone-fill",
+            Role.PROGRAMS_OFFICER: "bi-calendar-event-fill",
+            Role.MINISTRY_LEADER: "bi-people-fill",
+            Role.HEALTH_OFFICER: "bi-heart-pulse-fill",
+        }
+        return _ICONS.get(self.role, "bi-person-badge-fill")    
+
     def has_role(self, *roles):
         return self.role in roles
 

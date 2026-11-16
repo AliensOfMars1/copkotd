@@ -37,7 +37,7 @@ def create_article():
     if request.method == "POST":
         title = request.form.get("title", "").strip()
         summary = request.form.get("summary", "").strip()
-        body = request.form.get("body", "").strip()
+        body = request.form.get("body_html", "").strip()
         category = request.form.get("category", "").strip()
         author_name = request.form.get("author_name", "").strip()
         is_published = request.form.get("is_published") == "on"
@@ -89,7 +89,7 @@ def edit_article(article_id):
     if request.method == "POST":
         title = request.form.get("title", "").strip()
         summary = request.form.get("summary", "").strip()
-        body = request.form.get("body", "").strip()
+        body = request.form.get("body_html", "").strip()
         category = request.form.get("category", "").strip()
         author_name = request.form.get("author_name", "").strip()
         is_published = request.form.get("is_published") == "on"

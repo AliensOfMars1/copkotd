@@ -1,0 +1,33 @@
+{% extends "base_dashboard.html" %}
+{% block title %}Ministry Leader Dashboard{% endblock %}
+
+{% block content %}
+<div class="dash-header mb-4">
+  <div class="dash-greeting">
+    <h1 class="dash-title">Good {{ 'morning' if now.hour < 12 else ('afternoon' if now.hour < 17 else 'evening') }}, {{ current_user.first_name }}</h1>
+    <p class="dash-subtitle">{{ now.strftime('%A, %B %d, %Y') }}{% if current_user.ministry %} · {{ current_user.ministry.name }} Ministry{% endif %}</p>
+  </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body text-center py-5">
+    <div class="mb-3" style="font-size: 3rem;">⛪</div>
+    <h3 class="mb-2">Ministry Module Coming Soon</h3>
+    <p class="text-muted mb-0" style="max-width: 500px; margin: 0 auto;">
+      This dashboard will let you submit monthly ministry reports, track attendance,
+      and follow up on new converts once <strong>Attendance &amp; Ministry Reporting</strong> is implemented by the Tech team. <strong>Check back later</strong> for updates.
+    </p>
+  </div>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-white"><strong>What to expect</strong></div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i> Submit monthly ministry reports</li>
+    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i> Track meeting attendance</li>
+    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i> Record souls won &amp; new converts</li>
+    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i> Assign mentors &amp; track new-convert classes</li>
+    <li class="list-group-item"><i class="bi bi-check-circle text-success me-2"></i> Ministry-specific KPI overview</li>
+  </ul>
+</div>
+{% endblock %}

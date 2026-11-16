@@ -4,11 +4,16 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 from app.auth.decorators import role_required
 from app.utils.roles import Role
-from app.utils.birthdays import get_upcoming_birthdays, get_todays_birthdays, days_until_birthday
+from app.utils.birthdays import (
+    get_upcoming_birthdays,
+    get_todays_birthdays,
+    days_until_birthday,
+)
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 
+# ── Super Admin ────────────────────────────────────────────
 @dashboard_bp.route("/super-admin")
 @login_required
 @role_required(Role.SUPER_ADMIN)
@@ -24,11 +29,9 @@ def super_admin():
         "total_ministries": Ministry.query.filter_by(is_active=True).count(),
     }
     recent = Member.query.order_by(Member.created_at.desc()).limit(5).all()
-    
-    # Fetch birthdays
     todays_bdays = get_todays_birthdays()
     upcoming_bdays = get_upcoming_birthdays(days_ahead=7)
-    
+
     return render_template(
         "dashboard/super_admin.html",
         stats=stats,
@@ -40,61 +43,163 @@ def super_admin():
     )
 
 
+# ── Admin ──────────────────────────────────────────────────
 @dashboard_bp.route("/admin")
 @login_required
 @role_required(Role.ADMIN, Role.SUPER_ADMIN)
 def admin():
-    return render_template("dashboard/admin.html")
+    from app.models.member import Member
+    from app.models.ministry import Ministry
+    from app.models.family import Family
+
+    stats = {
+        "total_members": Member.query.count(),
+        "active_members": Member.query.filter_by(membership_status="active").count(),
+        "total_families": Family.query.filter_by(is_active=True).count(),
+        "total_ministries": Ministry.query.filter_by(is_active=True).count(),
+    }
+    recent = Member.query.order_by(Member.created_at.desc()).limit(5).all()
+    upcoming_bdays = get_upcoming_birthdays(days_ahead=7)
+
+    return render_template(
+        "dashboard/admin.html",
+        stats=stats,
+        recent=recent,
+        upcoming_birthdays=upcoming_bdays,
+        days_until=days_until_birthday,
+        now=datetime.utcnow(),
+    )
 
 
-@dashboard_bp.route("/financial-officer")
-@login_required
-@role_required(Role.FINANCIAL_OFFICER, Role.SUPER_ADMIN)
-def financial_officer():
-    return render_template("dashboard/financial_officer.html")
-
-
+# ── Records Officer ────────────────────────────────────────
 @dashboard_bp.route("/records-officer")
 @login_required
 @role_required(Role.RECORDS_OFFICER, Role.SUPER_ADMIN)
 def records_officer():
-    return render_template("dashboard/records_officer.html")
+    from app.models.member import Member
+    from app.models.family import Family
+
+    # "Incomplete" = member rows missing a phone or a DOB
+    incomplete = Member.query.filter(
+        (Member.phone == None) | (Member.date_of_birth == None)
+    ).count()
+
+    stats = {
+        "total_members": Member.query.count(),
+        "active_members": Member.query.filter_by(membership_status="active").count(),
+        "total_families": Family.query.filter_by(is_active=True).count(),
+        "incomplete": incomplete,
+    }
+    recent = Member.query.order_by(Member.created_at.desc()).limit(5).all()
+
+    return render_template(
+        "dashboard/records_officer.html",
+        stats=stats,
+        recent=recent,
+        now=datetime.utcnow(),
+    )
 
 
-@dashboard_bp.route("/compliance-officer")
-@login_required
-@role_required(Role.COMPLIANCE_OFFICER, Role.SUPER_ADMIN)
-def compliance_officer():
-    return render_template("dashboard/compliance_officer.html")
-
-
-@dashboard_bp.route("/data-officer")
-@login_required
-@role_required(Role.DATA_OFFICER, Role.SUPER_ADMIN)
-def data_officer():
-    return render_template("dashboard/data_officer.html")
-
-
+# ── Communications Officer ─────────────────────────────────
 @dashboard_bp.route("/communications-officer")
 @login_required
 @role_required(Role.COMMUNICATIONS_OFFICER, Role.SUPER_ADMIN)
 def communications_officer():
-    return render_template("dashboard/communications_officer.html")
+    from app.models.homepage import HomepageContent
+    from app.models.gallery import GalleryPhoto
+
+    now_dt = datetime.utcnow()
+
+    announcements = (
+        HomepageContent.query
+        .filter_by(content_type="announcement", is_published=True)
+        .order_by(HomepageContent.created_at.desc())
+        .limit(5)
+        .all()
+    )
+
+    live_events = (
+        HomepageContent.query
+        .filter_by(content_type="event", is_published=True)
+        .filter((HomepageContent.expires_at == None) | (HomepageContent.expires_at > now_dt))
+        .count()
+    )
+
+    stats = {
+        "announcements": HomepageContent.query.filter_by(
+            content_type="announcement", is_published=True
+        ).count(),
+        "events": live_events,
+        "photos": GalleryPhoto.query.filter_by(is_published=True).count(),
+        "has_sermon": HomepageContent.query.filter_by(
+            content_type="sermon", is_published=True
+        ).first() is not None,
+    }
+
+    return render_template(
+        "dashboard/communications_officer.html",
+        stats=stats,
+        announcements=announcements,
+        now=now_dt,
+    )
 
 
+# ── Financial Officer (placeholder) ────────────────────────
+@dashboard_bp.route("/financial-officer")
+@login_required
+@role_required(Role.FINANCIAL_OFFICER, Role.SUPER_ADMIN)
+def financial_officer():
+    return render_template(
+        "dashboard/financial_officer.html",
+        now=datetime.utcnow(),
+    )
+
+
+# ── Compliance Officer (placeholder) ───────────────────────
+@dashboard_bp.route("/compliance-officer")
+@login_required
+@role_required(Role.COMPLIANCE_OFFICER, Role.SUPER_ADMIN)
+def compliance_officer():
+    return render_template(
+        "dashboard/compliance_officer.html",
+        now=datetime.utcnow(),
+    )
+
+
+# ── Data Officer (placeholder) ─────────────────────────────
+@dashboard_bp.route("/data-officer")
+@login_required
+@role_required(Role.DATA_OFFICER, Role.SUPER_ADMIN)
+def data_officer():
+    return render_template(
+        "dashboard/data_officer.html",
+        now=datetime.utcnow(),
+    )
+
+
+# ── Programs Officer (placeholder) ─────────────────────────
 @dashboard_bp.route("/programs-officer")
 @login_required
 @role_required(Role.PROGRAMS_OFFICER, Role.SUPER_ADMIN)
 def programs_officer():
-    return render_template("dashboard/programs_officer.html")
+    return render_template(
+        "dashboard/programs_officer.html",
+        now=datetime.utcnow(),
+    )
 
 
+# ── Ministry Leader (placeholder) ──────────────────────────
 @dashboard_bp.route("/ministry-leader")
 @login_required
 @role_required(Role.MINISTRY_LEADER, Role.SUPER_ADMIN)
 def ministry_leader():
-    return render_template("dashboard/ministry_leader.html")
+    return render_template(
+        "dashboard/ministry_leader.html",
+        now=datetime.utcnow(),
+    )
 
+
+# ── Health Officer ─────────────────────────────────────────
 @dashboard_bp.route("/health-officer")
 @login_required
 @role_required(Role.HEALTH_OFFICER, Role.SUPER_ADMIN)

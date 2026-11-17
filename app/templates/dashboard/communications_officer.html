@@ -66,7 +66,7 @@
       <ul class="list-group list-group-flush">
         {% for a in announcements %}
         <li class="list-group-item">
-          <div class="fw-semibold" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ a.title }}</div>
+          <div class="fw-semibold text-truncate" title="{{ a.title }}">{{ a.title }}</div>
           <div class="text-muted small">{{ a.created_at.strftime('%b %d, %Y') }}</div>
         </li>
         {% else %}

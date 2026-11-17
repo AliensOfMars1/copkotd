@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from config import Config
 from app.extensions import db, login_manager, bcrypt, migrate, mail, csrf
 
@@ -37,6 +37,30 @@ def create_app(config_class=Config):
         if not text:
             return ""
         return md.markdown(text, extensions=["fenced_code", "tables", "nl2br"])
+
+    # ── Birthday context processor ─────────────────────
+    # Injects birthday data into every dashboard template.
+    # Only runs for /dashboard/* routes to avoid wasted queries
+    # on public pages.
+    @app.context_processor
+    def inject_birthdays():
+        from flask_login import current_user
+        if not current_user.is_authenticated:
+            return {}
+        # Only query on dashboard pages
+        if not request.path.startswith("/dashboard/"):
+            return {}
+
+        from app.utils.birthdays import (
+            get_todays_birthdays,
+            get_upcoming_birthdays,
+            days_until_birthday,
+        )
+        return {
+            "todays_birthdays": get_todays_birthdays(),
+            "upcoming_birthdays": get_upcoming_birthdays(days_ahead=7),
+            "days_until": days_until_birthday,
+        }
 
     # Register blueprints
     from app.main.routes import main_bp

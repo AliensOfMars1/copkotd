@@ -87,9 +87,9 @@ def create_user():
                 updated_by=current_user.id,
             )
             db.session.add(member)
-            db.session.flush()  # get member.id without committing
+            db.session.flush()
 
-        # 4. Create User linked to Member (name comes from Member)
+        # 4. Create User linked to Member
         temp_pwd = _generate_temp_password()
         u = User(
             email=form.email.data.lower().strip(),
@@ -144,16 +144,13 @@ def edit_user(user_id):
             flash("Ministry Leaders must be assigned to a ministry.", "danger")
             return render_template("users/form.html", form=form, user=u)
 
+        # Note: first_name / last_name are not editable here — they come from
+        # the linked Member record (single source of truth).
         u.email = form.email.data.lower().strip()
         u.phone = form.phone.data
         u.role = form.role.data
         u.ministry_id = form.ministry_id.data if form.role.data == Role.MINISTRY_LEADER else None
         u.is_active = form.is_active.data
-
-        # If this user is linked to a member, keep the User's name in sync
-        if u.member:
-            u.first_name = u.member.first_name
-            u.last_name = u.member.last_name
 
         db.session.commit()
         flash("User updated.", "success")

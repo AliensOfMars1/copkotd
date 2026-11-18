@@ -516,3 +516,38 @@
     margin: 0 !important;
   }
 }
+
+
+/* ============================================ */
+/* SIDEBAR ACTIONS (bottom)                      */
+/* ============================================ */
+.sidebar-actions {
+  margin-top: auto;
+  padding: 1rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  color: #cfd3d6;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-action-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+.sidebar-action-btn i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}

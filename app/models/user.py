@@ -21,14 +21,13 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # ── NEW: link to Member record ──────────────────────────
+    # ── Link to Member record ───────────────────────────────
     member_id = db.Column(
         db.Integer,
         db.ForeignKey("members.id", ondelete="SET NULL"),
         nullable=True,
-        unique=True,   # one user per member
+        unique=True,
     )
-
     member = db.relationship(
         "Member",
         backref=db.backref("user_account", uselist=False),
@@ -44,6 +43,9 @@ class User(UserMixin, db.Model):
 
     @property
     def full_name(self):
+        """Display name — Member is source of truth when linked."""
+        if self.member:
+            return self.member.full_name
         return f"{self.first_name} {self.last_name}"
 
     @property
@@ -52,7 +54,6 @@ class User(UserMixin, db.Model):
 
     @property
     def role_icon(self):
-        """Bootstrap Icon class per role — used in dashboard user cards."""
         _ICONS = {
             Role.SUPER_ADMIN: "bi-shield-lock-fill",
             Role.ADMIN: "bi-person-gear",
@@ -65,7 +66,7 @@ class User(UserMixin, db.Model):
             Role.MINISTRY_LEADER: "bi-people-fill",
             Role.HEALTH_OFFICER: "bi-heart-pulse-fill",
         }
-        return _ICONS.get(self.role, "bi-person-badge-fill")    
+        return _ICONS.get(self.role, "bi-person-badge-fill")
 
     def has_role(self, *roles):
         return self.role in roles

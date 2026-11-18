@@ -61,13 +61,11 @@
   {% endif %}
 </ul>
 
-{# ── User panel at the bottom ────────────────────────────── #}
-<div class="sidebar-user">
-  <div class="small text-uppercase text-secondary mb-1">Signed in as</div>
-  <div class="fw-semibold">{{ current_user.full_name }}</div>
-  <div class="small text-secondary mb-2">{{ current_user.role_label }}</div>
-  <a class="btn btn-sm btn-outline-light w-100"
-     href="{{ url_for('auth.logout') }}">
-    <i class="bi bi-box-arrow-right"></i> Logout
+<div class="sidebar-actions">
+  <a class="sidebar-action-btn"
+     href="{{ url_for('auth.logout') }}"
+     title="Logout">
+    <i class="bi bi-box-arrow-right"></i>
+    <span>Logout</span>
   </a>
 </div>
